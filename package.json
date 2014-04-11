@@ -1,0 +1,13 @@
+{
+  "name": "teamcity",
+  "version": "0.0.0",
+  "description": "TeamCity API",
+  "author": "Jeff Knaggs",
+  "license": "MIT",
+  "keywords": [
+    "teamcity"
+  ],
+  "scripts": {
+    "test": "grunt test"
+  }
+}
