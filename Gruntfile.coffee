@@ -1,4 +1,3 @@
-# Generated on 2014-04-04 using generator-bower 0.0.1
 'use strict'
 
 mountFolder = (connect, dir) ->
@@ -9,29 +8,20 @@ module.exports = (grunt) ->
 
   yeomanConfig =
     src: 'src'
-    dist : 'dist'
+    dist : 'lib'
 
   grunt.initConfig
     yeoman: yeomanConfig
 
-    browserify:
-      dist:
-        files:
-          '<%= yeoman.dist %>/flowdock.js': '.tmp/flowdock.js'
     coffee:
       dist:
         files: [
           expand: true
           cwd: '<%= yeoman.src %>'
           src: '{,*/}*.coffee'
-          dest: '.tmp'
+          dest: '<%= yeoman.dist %>'
           ext: '.js'
         ]
-
-    uglify:
-      build:
-        src: '<%= yeoman.dist %>/flowdock.js'
-        dest: '<%= yeoman.dist %>/flowdock.min.js'
 
     mochaTest:
       test:
@@ -44,8 +34,6 @@ module.exports = (grunt) ->
 
     grunt.registerTask 'build', [
       'coffee'
-      'browserify'
-      'uglify'
     ]
 
     grunt.registerTask 'default', [
