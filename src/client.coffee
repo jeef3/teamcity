@@ -65,6 +65,9 @@ class Client
   build: (id) ->
     new Build id, @
 
+  change: (locator) ->
+    new Change locator, @
+
   vcsRootInstance: (id) ->
     new VcsRootInstance id, @
 
