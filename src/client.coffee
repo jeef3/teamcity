@@ -1,6 +1,8 @@
 request = require 'request'
 
 Build = require './build'
+BuildQueue = require './build-queue'
+Change = require './change'
 VcsRootInstance = require './vcs-root-instance'
 
 class Client
@@ -64,6 +66,9 @@ class Client
 
   build: (id) ->
     new Build id, @
+
+  buildQueue: ->
+    new BuildQueue @
 
   change: (locator) ->
     new Change locator, @
