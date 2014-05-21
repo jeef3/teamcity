@@ -28,8 +28,10 @@ class Client
   _call: (options, cb) ->
     @_attachAuth options
     request options, (err, response, body) ->
-      obj = JSON.parse body
-      cb err, obj
+      if typeof body is 'string'
+        body = JSON.parse body
+
+      cb err, body if cb
 
   _get: (path, params, cb) ->
     options =
@@ -38,6 +40,9 @@ class Client
       qs: params
       headers:
         'Accept': 'application/json'
+
+    if typeof params is 'function'
+      cb = params
 
     @_call options, cb
 
@@ -49,6 +54,7 @@ class Client
       form: data
       headers:
         'Accept': 'application/json'
+        'Content-Type': 'application/json'
 
     @_call options, cb
 
