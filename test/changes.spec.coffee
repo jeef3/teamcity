@@ -29,7 +29,7 @@ describe 'Change', ->
   it 'should be able to query for changes by build', ->
     change = new Change locator: 'build:(id:4252)', client
     change.query()
-    expect(client).to.haveCalled 'get', '/changes?locator=build:(id:4252)'
+    expect(client).to.haveCalled 'get', '/changes', change.locator
 
   it 'should be able to query for changes by id', ->
     change = new Change 14800, client
