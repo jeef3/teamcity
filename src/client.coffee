@@ -28,10 +28,18 @@ class Client
   _call: (options, cb) ->
     @_attachAuth options
     request options, (err, response, body) ->
-      if typeof body is 'string'
-        body = JSON.parse body
+      return unless cb
 
-      cb err, body if cb
+      if err
+        cb err
+
+      if typeof body is 'string'
+        try
+          data = JSON.parse body
+        catch error
+          err = body
+
+      cb err, data
 
   _get: (path, params, cb) ->
     options =
