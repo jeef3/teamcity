@@ -38,6 +38,8 @@ class Client
           data = JSON.parse body
         catch error
           err = body
+      else
+        data = body
 
       cb err, data
 
