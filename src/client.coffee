@@ -59,10 +59,9 @@ class Client
     options =
       method: 'POST'
       url: @_url(path)
-      form: data
+      json: data
       headers:
         'Accept': 'application/json'
-        'Content-Type': 'application/json'
 
     @_call options, cb
 
@@ -70,7 +69,7 @@ class Client
     options =
       method: 'PUT'
       url: @_url(path)
-      form: data
+      json: data
       headers:
         'Accept': 'application/json'
 
