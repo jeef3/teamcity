@@ -1,5 +1,5 @@
 class Change
-  constructor: (@locator, @client) ->
+  constructor: (@id, @client) ->
 
   # FIXME: These are basically the same??
   info: (cb) ->
@@ -8,10 +8,7 @@ class Change
 
     @client._get "/changes/#{@locator}", cb
 
-  query: (cb) ->
-    if typeof @locator is 'number' or typeof @locator is 'string'
-      @client._get "/changes/#{@locator}", cb
-    else
-      @client._get '/changes', @locator, cb
+  query: (locator, cb) ->
+    @client._get "/changes?locator=#{locator.compile()}", null, cb
 
 module.exports = Change

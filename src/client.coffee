@@ -44,6 +44,7 @@ class Client
       cb err, data
 
   _get: (path, params, cb) ->
+    console.log path
     options =
       method: 'GET'
       url: @_url(path)
@@ -76,8 +77,6 @@ class Client
         'Accept': 'application/json'
 
     @_call options, cb
-
-
 
   build: (id) ->
     new Build id, @
