@@ -1,7 +1,9 @@
 request = require 'request'
 
 Build = require './build'
+BuildTypes = require './build-types'
 BuildQueue = require './build-queue'
+Projects = require './projects'
 Change = require './change'
 VcsRootInstance = require './vcs-root-instance'
 
@@ -44,16 +46,18 @@ class Client
       cb err, data
 
   _get: (path, params, cb) ->
-    console.log path
+    console.log path, params
+
     options =
       method: 'GET'
       url: @_url(path)
-      qs: params
       headers:
         'Accept': 'application/json'
 
     if typeof params is 'function'
       cb = params
+    else
+      options.qs = params
 
     @_call options, cb
 
@@ -78,16 +82,16 @@ class Client
 
     @_call options, cb
 
-  build: (id) ->
-    new Build id, @
+  projects: new Projects @
 
-  buildQueue: ->
-    new BuildQueue @
+  buildTypes: new BuildTypes @
 
-  change: (locator) ->
-    new Change locator, @
+  builds: new Build @
 
-  vcsRootInstance: (id) ->
-    new VcsRootInstance id, @
+  buildQueue: -> new BuildQueue @
+
+  change: -> new Change @
+
+  vcsRootInstance: -> new VcsRootInstance @
 
 module.exports = Client

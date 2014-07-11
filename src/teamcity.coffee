@@ -1,9 +1,21 @@
 Client = require './client'
-Locator = require './locator'
+ProjectLocator = require './locators/project-locator'
+ChangesLocator = require './locators/changes-locator'
+BuildLocator = require './locators/build-locator'
+BuildTypeLocator = require './locators/build-type-locator'
 
 module.exports =
   client: (options) ->
     return new Client options
 
-  locator: ->
-    return new Locator
+  projectLocator: ->
+    return new ProjectLocator
+
+  changesLocator: ->
+    return new ChangesLocator
+
+  buildLocator: ->
+    return new BuildLocator
+
+  buildTypeLocator: ->
+    return new BuildTypeLocator

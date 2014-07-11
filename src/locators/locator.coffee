@@ -3,11 +3,10 @@ class Locator
   constructor: ->
     @locators = {}
 
-  build: (props) -> @_add 'build', props
-  buildType: (props) -> @_add 'buildType', props
-  sinceChange: (props) -> @_add 'sinceChange', props
-  branch: (props) -> @_add 'branch', props
-  number: (props) -> @_add 'number', props
+  @dimensions: (dimensions) ->
+    for dimension in dimensions
+      @[dimension] = (value) ->
+        @_add dimension, value
 
   compile: ->
     str = ''
@@ -32,11 +31,11 @@ class Locator
     str = str.substring 0, str.length - 1
     str
 
-  _add: (name, props) ->
-    if typeof props.compile is 'function'
-      @locators[name] = props.compile()
+  _add: (name, value) ->
+    if typeof value.compile is 'function'
+      @locators[name] = value.compile()
     else
-      @locators[name] = props
+      @locators[name] = value
 
     this
 

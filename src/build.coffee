@@ -1,10 +1,14 @@
 class Build
-  constructor: (@id, @client) ->
+  constructor: (@client) ->
 
-  info: (cb) ->
+  info: (id, cb) ->
     @client._get "/builds/#{@id}", null, cb
 
-  query: (locator, cb) ->
-    @client._get "/builds/?locator=#{locator.compile()}", null, cb
+  all: ->
+    @client._get '/builds', null, cb
+
+  locate: (locator, cb) ->
+    console.log 'locating'
+    @client._get '/builds', locator: locator.compile(), cb
 
 module.exports = Build
