@@ -1,8 +1,6 @@
 expect = require('chai').expect
 require './have-called'
 
-Client = require './mock/client.mock'
-VcsRootInstance = require '../src/vcs-root-instance'
 
 describe 'VCS Root Instance', ->
   client = null

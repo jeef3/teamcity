@@ -2,16 +2,17 @@ expect = require('chai').expect
 require './have-called'
 
 Client = require './mock/client.mock'
-Build = require '../src/build'
 
 describe 'Build', ->
-  client = null
-  build = null
+  builds = null
 
   beforeEach ->
-    client = new Client
-    build = new Build 1, client
+    builds = require('../src/builds')(client)
 
   it 'should be able to get the build info', ->
-    build.info()
+    builds(1)
     expect(client).to.haveCalled 'get', '/builds/1'
+
+  it 'should be able to get all builds', ->
+    builds ->
+    expect(client).to.haveCalled 'get', '/builds'

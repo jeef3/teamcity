@@ -1,15 +1,12 @@
 expect = require('chai').expect
 require './have-called'
 
-Client = require './mock/client.mock'
-Change = require '../src/change'
+TeamCity = require('../src/teamcity').TeamCity
 
-describe 'Change', ->
-  client = null
-  change = null
+describe 'Changes', ->
 
   beforeEach ->
-    client = new Client
+    teamCity = new TamCity()
 
   it 'should be able to get a change by id', ->
     change = new Change 14800, client
