@@ -5,10 +5,8 @@ module.exports = (client) ->
       client._get '/builds', cb
 
     else if locator.compile
-      console.log 'was locator', locator
       client._get '/builds', locator: locator.compile(), cb
 
     else
-      console.log 'was id', locator
       id = locator
       client._get "/builds/#{id}", cb

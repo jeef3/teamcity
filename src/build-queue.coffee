@@ -1,10 +1,17 @@
-class BuildQueue
-  constructor: (@client) ->
+module.exports = (client) ->
+  buildQueue = (locator, cb) ->
+    if typeof locator is 'function'
+      cb = locator
+      client._get '/buildQueue', cb
 
-  add: (build, cb) ->
-    @client._post '/buildQueue', build, cb
+    else if locator.compile
+      client._get '/buildQueue', locator: locator.compile()
 
-  findTask: (taskId, cb) ->
-    @client._get "/buildQueue/taskId:#{taskId}", null, cb
+    else
+      id = locator
+      client._get "/buildQueue/taskId:#{id}", cb
 
-module.exports = BuildQueue
+  buildQueue.add = (build, cb) ->
+    client._post '/buildQueue', build, cb
+
+  buildQueue

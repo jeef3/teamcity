@@ -10,6 +10,6 @@ describe 'VCS Root Instance', ->
     client = new Client
     vcsRootInstance = new VcsRootInstance 1, client
 
-  it 'should be able to get the VCS root instance info', ->
+  it 'should get the VCS root instance info', ->
     vcsRootInstance.info()
     expect(client).to.haveCalled 'get', '/vcs-root-instances/1'

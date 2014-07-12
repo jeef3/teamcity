@@ -2,17 +2,32 @@ expect = require('chai').expect
 require './have-called'
 
 Client = require './mock/client.mock'
-BuildQueue = require '../src/build-queue'
+BuildQueueLocator = require '../src/locators/build-queue-locator'
 
-describe 'Build Queue', ->
+describe 'API :: Build Queue', ->
   client = null
   buildQueue = null
 
   beforeEach ->
     client = new Client
-    buildQueue = new BuildQueue client
+    buildQueue = require('../src/build-queue')(client)
 
-  it 'should be able to post to the build queue', ->
+  it 'should get a queded builds info', ->
+    buildQueue 1
+    expect(client).to.haveCalled 'get', '/buildQueue/taskId:1'
+
+  it 'should get all queued builds', ->
+    buildQueue ->
+    expect(client).to.haveCalled 'get', '/buildQueue'
+
+  it 'should get queued builds by build queue locator', ->
+    locator = new BuildQueueLocator()
+      .buildType id: 1234
+
+    buildQueue locator
+    expect(client).to.haveCalled 'get', '/buildQueue', locator: locator.compile()
+
+  it 'should post to the build queue', ->
     build = buildTypeId: 1
     buildQueue.add build
     expect(client).to.haveCalled 'post', '/buildQueue', build

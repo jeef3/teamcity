@@ -12,17 +12,17 @@ describe 'API :: Changes', ->
     client = new Client()
     changes = require('../src/changes')(client)
 
-  it 'should be able to get the change info', ->
+  it 'should get the change info', ->
     changes(1)
     expect(client).to.haveCalled 'get', '/changes/1'
 
-  it 'should be able to get all changes', ->
+  it 'should get all changes', ->
     changes -> 
     expect(client).to.haveCalled 'get', '/changes'
 
-  it 'should be able to get changes by change locator', ->
+  it 'should get changes by change locator', ->
     locator = new ChangeLocator()
       .buildType id: 1234
 
     changes(locator)
-    expect(client).to.haveCalled 'get', '/changes?locator=buildType:(id:1234)'
+    expect(client).to.haveCalled 'get', '/changes', locator: locator.compile()

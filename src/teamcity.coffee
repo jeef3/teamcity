@@ -83,8 +83,6 @@ class TeamCity
       cb err, data
 
   _get: (path, params, cb) ->
-    console.log path, params
-
     options =
       method: 'GET'
       url: @_url(path)

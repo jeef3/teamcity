@@ -1,6 +1,6 @@
 Locator = require './locator'
 
-class ChangesLocator extends Locator
+class ChangeLocator extends Locator
   @dimensions [
     'id'
     'project'
@@ -20,4 +20,4 @@ class ChangesLocator extends Locator
     'count'
   ]
 
-module.exports = ChangesLocator
+module.exports = ChangeLocator
