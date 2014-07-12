@@ -4,7 +4,7 @@ require './have-called'
 Client = require './mock/client.mock'
 BuildLocator = require '../src/locators/build-locator'
 
-describe 'API :: Build', ->
+describe 'API :: Builds', ->
   client = null
   builds = null
 

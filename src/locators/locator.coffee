@@ -4,9 +4,16 @@ class Locator
     @locators = {}
 
   @dimensions: (dimensions) ->
-    for dimension in dimensions
-      @[dimension] = (value) ->
-        @_add dimension, value
+    @addDimension(d) for d in dimensions
+
+  @addDimension = (name) ->
+    @prototype[name] = (value) ->
+      if typeof value.compile is 'function'
+        @locators[name] = value.compile()
+      else
+        @locators[name] = value
+
+    this
 
   compile: ->
     str = ''
@@ -15,8 +22,8 @@ class Locator
 
       if typeof locator is 'string' or typeof locator is 'number'
         str = "#{str}#{name}:(#{locator})"
-      else if locator is Locator
-        str = "#{str}#{name}:(#{locator.build()})"
+      else if typeof locator.compile  == 'function'
+        str = "#{str}#{name}:(#{locator.compile()})"
       else
 
         str = "#{str}#{name}:("
@@ -30,13 +37,5 @@ class Locator
 
     str = str.substring 0, str.length - 1
     str
-
-  _add: (name, value) ->
-    if typeof value.compile is 'function'
-      @locators[name] = value.compile()
-    else
-      @locators[name] = value
-
-    this
 
 module.exports = Locator

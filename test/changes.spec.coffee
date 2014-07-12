@@ -1,34 +1,28 @@
 expect = require('chai').expect
 require './have-called'
 
-TeamCity = require('../src/teamcity').TeamCity
+Client = require './mock/client.mock'
+ChangeLocator = require '../src/locators/change-locator'
 
-describe 'Changes', ->
+describe 'API :: Changes', ->
+  client = null
+  changes = null
 
   beforeEach ->
-    teamCity = new TamCity()
+    client = new Client()
+    changes = require('../src/changes')(client)
 
-  it 'should be able to get a change by id', ->
-    change = new Change 14800, client
-    change.info()
-    expect(client).to.haveCalled 'get', '/changes/14800'
+  it 'should be able to get the change info', ->
+    changes(1)
+    expect(client).to.haveCalled 'get', '/changes/1'
 
-    change = new Change '14800', client
-    change.info()
-    expect(client).to.haveCalled 'get', '/changes/14800'
+  it 'should be able to get all changes', ->
+    changes -> 
+    expect(client).to.haveCalled 'get', '/changes'
 
-  it 'should require a change id to get the info', ->
-    change = new Change locator: 'build:(id:4252)', client
-    expect(->
-      change.info()
-    ).to.throw()
+  it 'should be able to get changes by change locator', ->
+    locator = new ChangeLocator()
+      .buildType id: 1234
 
-  it 'should be able to query for changes by build', ->
-    change = new Change locator: 'build:(id:4252)', client
-    change.query()
-    expect(client).to.haveCalled 'get', '/changes', change.locator
-
-  it 'should be able to query for changes by id', ->
-    change = new Change 14800, client
-    change.query()
-    expect(client).to.haveCalled 'get', '/changes/14800'
+    changes(locator)
+    expect(client).to.haveCalled 'get', '/changes?locator=buildType:(id:1234)'

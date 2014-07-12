@@ -1,14 +1,12 @@
-class Change
-  constructor: (@id, @client) ->
+module.exports = (client) ->
+  (locator, cb) ->
+    if typeof locator is 'function'
+      cb = locator
+      client._get '/changes', cb
 
-  # FIXME: These are basically the same??
-  info: (cb) ->
-    if typeof @locator isnt 'number' and typeof @locator isnt 'string'
-      throw 'Calls to info require a change ID'
+    else if locator.compile
+      client._get '/changes', locator: locator.compile(), cb
 
-    @client._get "/changes/#{@locator}", cb
-
-  query: (locator, cb) ->
-    @client._get "/changes?locator=#{locator.compile()}", null, cb
-
-module.exports = Change
+    else
+      id = locator
+      client._get "/changes/#{id}", cb
