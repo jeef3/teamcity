@@ -9,5 +9,6 @@ module.exports = (client) ->
       client._get '/builds', locator: locator.compile(), cb
 
     else
+      console.log 'was id', locator
       id = locator
       client._get "/builds/#{id}", cb

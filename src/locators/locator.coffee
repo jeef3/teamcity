@@ -12,7 +12,7 @@ class Locator
         @locators[name] = value.compile()
       else
         @locators[name] = value
-
+      this
     this
 
   compile: ->

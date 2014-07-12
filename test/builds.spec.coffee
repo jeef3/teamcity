@@ -22,7 +22,8 @@ describe 'API :: Builds', ->
 
   it 'should be able to get builds by build locator', ->
     locator = new BuildLocator()
-      .buildType id: 1234
+      .buildType(id: 1234)
 
+    console.log 'c', locator.compile()
     builds(locator)
-    expect(client).to.haveCalled 'get', '/builds?locator=buildType:(id:1234)'
+    expect(client).to.haveCalled 'get', '/builds', locator
