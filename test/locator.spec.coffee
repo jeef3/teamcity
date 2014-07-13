@@ -26,4 +26,5 @@ describe 'Locator', ->
   it 'should compile dimensions', ->
     locator.dim('val1')
     locator.sum(id: 123)
-    expect(locator.compile()).to.equal('dim:(val1),sum:(id:123)')
+    expect(locator.compile()).to.equal('dim:val1,sum:(id:123)')
+

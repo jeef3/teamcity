@@ -1,15 +1,12 @@
-BuildTypeLocator = require './locators/build-type-locator';
+module.exports = (client) ->
+  (locator, cb) ->
+    if typeof locator is 'function'
+      cb = locator
+      client._get '/buildTypes', cb
 
-class BuildTypes
-  constructor: (@client) ->
+    else if locator.compile
+      client._get '/buildTypes', locator: locator.compile(), cb
 
-  info: (id, cb) ->
-    @locate new BuildTypeLocator().id(id), cb
-
-  all: (cb) ->
-    @client._get '/buildTypes', cb
-
-  locate: (locator, cb) ->
-    @client._get '/buildTypes', locate: locator.compile(), cb
-
-module.exports = BuildTypes
+    else
+      id = locator
+      client._get "/buildTypes/#{id}", cb

@@ -1,7 +1,12 @@
-class VcsRootInstance
-  constructor: (@id, @client) ->
+module.exports = (client) ->
+  (locator, cb) ->
+    if typeof locator is 'function'
+      cb = locator
+      client._get '/vcs-root-instances', cb
 
-  info: (cb) ->
-    @client._get "/vcs-root-instances/#{@id}", null, cb
+    else if locator.compile
+      client._get '/vcs-root-instances', locator: locator.compile(), cb
 
-module.exports = VcsRootInstance
+    else
+      id = locator
+      client._get "/vcs-root-instances/#{id}", cb

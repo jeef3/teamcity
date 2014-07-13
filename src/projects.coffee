@@ -1,32 +1,38 @@
-ProjectLocator = require './locators/project-locator'
+module.exports = (client) ->
+  getter = (locator) ->
+    identifier = if locator.compile then locator.compile() else locator
 
-class Projects
-  constructor: (@client) ->
-    @locator = ProjectLocator
+    buildTypes: (cb) ->
+      client._get "/projects/#{identifier}/buildTypes", cb
+    templates: (cb) ->
+      client._get "/projects/#{identifier}/templates", cb
 
-  get: (id, cb) ->
-    @locate new ProjectLocator().id(id), cb
 
-  all: (cb) ->
-    @client._get '/projects', cb
-
-  locate: (locator, cb) ->
-    if !locator.compile
-      locator = new ProjectLocator(locator)
-
-    if cb
-      @client._get '/projects', locate: locator.compile(), cb
+  getProject = (locator, cb) ->
+    if locator.compile
+      client._get '/projects', locator: locator.compile()
     else
-      @locator = locator
-      this
+      id = locator
+      client._get "/projects/#{id}", cb
+
+  projects = (locator, cb) ->
+    if typeof locator is 'function'
+      cb = locator
+      return client._get '/projects', cb
+
+    if cb and typeof cb is 'function'
+      getProject locator, cb
+    else
+      getter locator
+
+  projects
 
 
-  buildTypes:
-    all: (cb) ->
-      @client._get "/projects/#{@locator.compile()}/buildTypes", cb
+  # buildTypes:
+  #   all: (cb) ->
+  #     @client._get "/projects/#{@locator.compile()}/buildTypes", cb
 
-  templates:
-    all: (cb) ->
-      @client._get "/projects/#{@locator.compile()}/templates", cb
+  # templates:
+  #   all: (cb) ->
+  #     @client._get "/projects/#{@locator.compile()}/templates", cb
 
-module.exports = Projects

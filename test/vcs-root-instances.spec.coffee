@@ -1,15 +1,20 @@
 expect = require('chai').expect
 require './have-called'
 
+Client = require './mock/client.mock'
 
-describe 'VCS Root Instance', ->
+describe 'API :: VCS Root Instances', ->
   client = null
   vcsRootInstance = null
 
   beforeEach ->
     client = new Client
-    vcsRootInstance = new VcsRootInstance 1, client
+    vcsRootInstance = require('../src/vcs-root-instances')(client)
 
   it 'should get the VCS root instance info', ->
-    vcsRootInstance.info()
+    vcsRootInstance 1
     expect(client).to.haveCalled 'get', '/vcs-root-instances/1'
+
+  it 'should get all VCS root instances', ->
+    vcsRootInstance ->
+    expect(client).to.haveCalled 'get', '/vcs-root-instances'

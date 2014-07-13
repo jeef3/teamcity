@@ -21,7 +21,7 @@ class Locator
     for name, locator of @locators
 
       if typeof locator is 'string' or typeof locator is 'number'
-        str = "#{str}#{name}:(#{locator})"
+        str = "#{str}#{name}:#{locator}"
       else if typeof locator.compile  == 'function'
         str = "#{str}#{name}:(#{locator.compile()})"
       else
