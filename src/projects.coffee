@@ -1,5 +1,5 @@
 module.exports = (client) ->
-  getter = (locator) ->
+  childGetter = (locator) ->
     identifier = if locator.compile then locator.compile() else locator
 
     buildTypes: (cb) ->
@@ -23,16 +23,6 @@ module.exports = (client) ->
     if cb and typeof cb is 'function'
       getProject locator, cb
     else
-      getter locator
+      childGetter locator
 
   projects
-
-
-  # buildTypes:
-  #   all: (cb) ->
-  #     @client._get "/projects/#{@locator.compile()}/buildTypes", cb
-
-  # templates:
-  #   all: (cb) ->
-  #     @client._get "/projects/#{@locator.compile()}/templates", cb
-
