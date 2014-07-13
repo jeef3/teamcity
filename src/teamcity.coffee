@@ -1,3 +1,5 @@
+request = require 'request'
+
 ProjectLocator = require './locators/project-locator'
 ChangesLocator = require './locators/changes-locator'
 BuildLocator = require './locators/build-locator'
@@ -18,17 +20,23 @@ class TeamCity
 
   # API
 
-  projects: -> require('./projects')(@)
+  projects: (locator, cb) ->
+    require('./projects')(@)(locator, cb)
 
-  buildTypes: require('./build-types')(@)
+  buildTypes: (locator, cb) ->
+    require('./build-types')(@)(locator, cb)
 
-  builds: -> require('./builds')(@)
+  builds: (locator, cb) ->
+    require('./builds')(@)(locator, cb)
 
-  buildQueue: -> require('./build-queue')(@)
+  buildQueue: (locator, cb) ->
+    require('./build-queue')(@)(locator, cb)
 
-  changes: -> require('./changes')
+  changes: (locator, cb) ->
+    require('./changes')(@)(locator, cb)
 
-  vcsRootInstances: -> require('./vcs-root-instances')(@)
+  vcsRootInstances: (locator, cb) ->
+    require('./vcs-root-instances')(@)(locator, cb)
 
 
   # Locators
