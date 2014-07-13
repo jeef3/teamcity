@@ -6,6 +6,8 @@ module.exports = (client) ->
       client._get "/projects/#{identifier}/buildTypes", cb
     templates: (cb) ->
       client._get "/projects/#{identifier}/templates", cb
+    parameters: (param, cb) ->
+      client._get "/projects/#{identifier}/parameters/#{param}", cb
 
 
   getProject = (locator, cb) ->

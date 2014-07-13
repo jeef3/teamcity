@@ -37,3 +37,12 @@ describe 'API :: Projects', ->
 
     projects(locator).buildTypes ->
     expect(client).to.haveCalled 'get', '/projects/name:project-one/buildTypes'
+
+  xit 'should get project (by id) parameters', ->
+
+  it 'should get project (by locator) parameters', ->
+    locator = new ProjectLocator()
+      .name 'project-one'
+
+    projects(locator).parameters 'param-one', ->
+    expect(client).to.haveCalled 'get', '/projects/name:project-one/parameters/param-one'
