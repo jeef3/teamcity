@@ -2,36 +2,27 @@ expect = require('chai').expect
 require './have-called'
 
 Client = require './mock/client.mock'
-Change = require '../src/change'
+ChangeLocator = require '../src/locators/change-locator'
 
-describe 'Change', ->
+describe 'API :: Changes', ->
   client = null
-  change = null
+  changes = null
 
   beforeEach ->
-    client = new Client
+    client = new Client()
+    changes = require('../src/changes')(client)
 
-  it 'should be able to get a change by id', ->
-    change = new Change 14800, client
-    change.info()
-    expect(client).to.haveCalled 'get', '/changes/14800'
+  it 'should get the change info', ->
+    changes(1)
+    expect(client).to.haveCalled 'get', '/changes/1'
 
-    change = new Change '14800', client
-    change.info()
-    expect(client).to.haveCalled 'get', '/changes/14800'
+  it 'should get all changes', ->
+    changes -> 
+    expect(client).to.haveCalled 'get', '/changes'
 
-  it 'should require a change id to get the info', ->
-    change = new Change locator: 'build:(id:4252)', client
-    expect(->
-      change.info()
-    ).to.throw()
+  it 'should get changes by change locator', ->
+    locator = new ChangeLocator()
+      .buildType id: 1234
 
-  it 'should be able to query for changes by build', ->
-    change = new Change locator: 'build:(id:4252)', client
-    change.query()
-    expect(client).to.haveCalled 'get', '/changes', change.locator
-
-  it 'should be able to query for changes by id', ->
-    change = new Change 14800, client
-    change.query()
-    expect(client).to.haveCalled 'get', '/changes/14800'
+    changes(locator)
+    expect(client).to.haveCalled 'get', '/changes', locator: locator.compile()
