@@ -4,6 +4,7 @@ ProjectLocator = require './locators/project-locator'
 ChangesLocator = require './locators/changes-locator'
 BuildLocator = require './locators/build-locator'
 BuildTypeLocator = require './locators/build-type-locator'
+BuildQueueLocator = require './locators/build-queue-locator'
 
 class TeamCity
   constructor: (options) ->
@@ -52,6 +53,9 @@ class TeamCity
 
   buildTypeLocator: ->
     return new BuildTypeLocator
+
+  buildQueueLocator: ->
+    return new BuildQueueLocator
 
 
   # URL Helpers
