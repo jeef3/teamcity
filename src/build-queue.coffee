@@ -1,5 +1,9 @@
 module.exports = (client) ->
   buildQueue = (locator, cb) ->
+    if !locator and !cb
+      return add:  (build, cb) ->
+        client._post '/buildQueue', build, cb
+
     if typeof locator is 'function'
       cb = locator
       client._get '/buildQueue', cb
@@ -10,8 +14,5 @@ module.exports = (client) ->
     else
       id = locator
       client._get "/buildQueue/taskId:#{id}", cb
-
-  buildQueue.add = (build, cb) ->
-    client._post '/buildQueue', build, cb
 
   buildQueue

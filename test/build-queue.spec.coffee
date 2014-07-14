@@ -29,5 +29,5 @@ describe 'API :: Build Queue', ->
 
   it 'should post to the build queue', ->
     build = buildTypeId: 1
-    buildQueue.add build
+    buildQueue().add build
     expect(client).to.haveCalled 'post', '/buildQueue', build
