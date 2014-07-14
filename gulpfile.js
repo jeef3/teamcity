@@ -26,6 +26,7 @@ gulp.task('clean', function (done) {
 
 gulp.task('watch', function () {
   gulp.watch([
-    'src/**/*.coffee'
+    'src/**/*.coffee',
+    'test/**/*.spec.coffee'
   ], ['test']);
 });
