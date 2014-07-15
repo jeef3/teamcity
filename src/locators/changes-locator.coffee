@@ -2,7 +2,8 @@ Locator = require './locator'
 
 class ChangeLocator extends Locator
   @dimensions [
-    'id'
+    'id',
+    'branch',
     'project'
     'buildType'
     'build'
