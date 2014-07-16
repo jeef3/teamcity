@@ -61,7 +61,7 @@ class TeamCity
   # URL Helpers
 
   _url: (path) ->
-    "#{@protocol}://#{@baseUrl}/app/rest#{path}"
+    "#{@protocol}://#{@baseUrl}#{path}"
 
   _attachAuth: (options) ->
     return unless @auth

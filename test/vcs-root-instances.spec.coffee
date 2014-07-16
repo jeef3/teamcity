@@ -13,8 +13,8 @@ describe 'API :: VCS Root Instances', ->
 
   it 'should get the VCS root instance info', ->
     vcsRootInstance 1
-    expect(client).to.haveCalled 'get', '/vcs-root-instances/1'
+    expect(client).to.haveCalled 'get', '/app/rest/vcs-root-instances/1'
 
   it 'should get all VCS root instances', ->
     vcsRootInstance ->
-    expect(client).to.haveCalled 'get', '/vcs-root-instances'
+    expect(client).to.haveCalled 'get', '/app/rest/vcs-root-instances'

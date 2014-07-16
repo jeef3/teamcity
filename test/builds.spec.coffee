@@ -14,15 +14,22 @@ describe 'API :: Builds', ->
 
   it 'should get the build info', ->
     builds 1
-    expect(client).to.haveCalled 'get', '/builds/1'
+    expect(client).to.haveCalled 'get', '/app/rest/builds/1'
 
   it 'should get all builds', ->
     builds ->
-    expect(client).to.haveCalled 'get', '/builds'
+    expect(client).to.haveCalled 'get', '/app/rest/builds'
 
   it 'should get builds by build locator', ->
     locator = new BuildLocator()
       .buildType id: 1234
 
     builds locator
-    expect(client).to.haveCalled 'get', '/builds', locator: locator.compile()
+    expect(client).to.haveCalled 'get', '/app/rest/builds', locator: locator.compile()
+
+  it 'should get the build log', ->
+    locator = new BuildLocator()
+      .buildType id: 1234
+
+    builds(locator).buildLog ->
+    expect(client).to.haveCalled 'get', '/downloadBuildLog.html', locator: locator.compile()

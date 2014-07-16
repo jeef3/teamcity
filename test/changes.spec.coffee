@@ -14,15 +14,15 @@ describe 'API :: Changes', ->
 
   it 'should get the change info', ->
     changes(1)
-    expect(client).to.haveCalled 'get', '/changes/1'
+    expect(client).to.haveCalled 'get', '/app/rest/changes/1'
 
   it 'should get all changes', ->
-    changes -> 
-    expect(client).to.haveCalled 'get', '/changes'
+    changes ->
+    expect(client).to.haveCalled 'get', '/app/rest/changes'
 
   it 'should get changes by change locator', ->
     locator = new ChangeLocator()
       .buildType id: 1234
 
     changes(locator)
-    expect(client).to.haveCalled 'get', '/changes', locator: locator.compile()
+    expect(client).to.haveCalled 'get', '/app/rest/changes', locator: locator.compile()
