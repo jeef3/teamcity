@@ -1,5 +1,8 @@
 class Locatable
   constructor: (@client, @byLocator) ->
+    name = @constructor.name.toLowerCase()
+    @path = "/app/rest/#{name}"
+
     @by = @byLocator
     @by.locate = (cb) =>
       if cb then @client._get "#{@path}/#{@byLocator.compile()}", cb

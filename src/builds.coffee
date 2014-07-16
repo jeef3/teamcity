@@ -2,8 +2,6 @@ Locatable = require './locatable'
 BuildLocator = require './locators/build-locator'
 
 class Builds extends Locatable
-  @path '/app/rest/builds'
-
   constructor: (@client) ->
     super @client, new BuildLocator
 
