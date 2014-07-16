@@ -8,8 +8,9 @@
     "Jeff Knaggs <mail@jeef3.com>"
   ],
   "scripts": {
-    "test": "gulp test"
-  }
+    "test": "mocha --compilers coffee:coffee-script/register",
+    "prepublish": "gulp build"
+  },
   "main": "lib/teamcity",
   "keywords": [
     "teamcity",
