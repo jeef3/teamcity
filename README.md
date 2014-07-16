@@ -4,6 +4,10 @@
 
 [TeamCity REST API](http://confluence.jetbrains.com/display/TCD8/REST+API)
 
+## Under Construction
+
+This library is still under heavy construction.
+
 ## Installation
 
 ```
