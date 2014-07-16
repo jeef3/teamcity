@@ -2,6 +2,7 @@ expect = require('chai').expect
 require './have-called'
 
 Client = require './mock/client.mock'
+Builds = require '../src/builds'
 BuildLocator = require '../src/locators/build-locator'
 
 describe 'API :: Builds', ->
@@ -10,21 +11,21 @@ describe 'API :: Builds', ->
 
   beforeEach ->
     client = new Client
-    builds = require('../src/builds')(client)
+    builds = new Builds client
 
   it 'should get the build info', ->
-    builds 1, ->
+    builds.locate 1, ->
     expect(client).to.haveCalled 'get', '/app/rest/builds/1'
 
   it 'should get all builds', ->
-    builds ->
+    builds.locate ->
     expect(client).to.haveCalled 'get', '/app/rest/builds'
 
   it 'should get builds by build locator', ->
     locator = new BuildLocator()
       .buildType id: 1234
 
-    builds locator, ->
+    builds.locate locator, ->
     expect(client).to.haveCalled 'get', '/app/rest/builds', locator: locator.compile()
 
   it 'should get the build log', ->
@@ -32,7 +33,7 @@ describe 'API :: Builds', ->
       locator = new BuildLocator()
         .buildType id: 1234
 
-      builds(locator).buildLog ->
+      builds.locate(locator).buildLog ->
     ).to.throw 'Can only get build log by id'
 
     builds(1234).buildLog ->

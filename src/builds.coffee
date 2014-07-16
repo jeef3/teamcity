@@ -1,26 +1,32 @@
-module.exports = (client) ->
-  children = (locator) ->
-    buildLog: (cb) ->
-      if locator.compile
-        throw new Error 'Can only get build log by id'
-      else
-        client._get '/downloadBuildLog.html', buildId: locator
+class Locatable
 
-  build = (locator, cb) ->
-    if locator.compile
-      client._get '/app/rest/builds', locator: locator.compile(), cb
-    else
-      id = locator
-      client._get "/app/rest/builds/#{id}", cb
+  constructor: (@client, @path) ->
 
-  builds = (locator, cb) ->
-    if typeof locator is 'function'
+  locate: (locator, cb) ->
+    # No locator, get everything
+    if !cb and typeof locator is 'function'
       cb = locator
-      return client._get '/app/rest/builds', cb
+      @client._get @path, cb
 
-    if cb and typeof cb is 'function'
-      build locator, cb
+    # Locator and callback, locate em
+    else if cb
+      identifier = if locator.compile then locator.compile() else locator
+      @client._get "#{@path}/#{identifier}"
+
+    # Locator, no callback, prepare to get the children
     else
-      children locator
+      @locator = locator
 
-  builds
+    this
+
+
+class Builds extends Locatable
+  constructor: (@client) ->
+    super @client, '/app/rest/builds'
+
+  buildLog: ->
+    @client._get '/downloadBuildLog'
+    this
+
+
+module.exports = Builds
