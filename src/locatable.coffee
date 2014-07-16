@@ -5,6 +5,9 @@ class Locatable
       if cb then @client._get "#{@path}/#{@byLocator.compile()}", cb
       this
 
+  @path: (path) ->
+    @prototype.path = path
+
   get: (id, cb) ->
     if cb then @client._get "#{@path}/#{id}"
     @id = id

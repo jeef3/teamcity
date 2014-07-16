@@ -2,9 +2,10 @@ Locatable = require './locatable'
 BuildLocator = require './locators/build-locator'
 
 class Builds extends Locatable
+  @path '/app/rest/builds'
+
   constructor: (@client) ->
     super @client, new BuildLocator
-    @path = '/app/rest/builds'
 
   buildLog: (cb) ->
     if !@id then throw new Error 'Can only get build log by build id'
