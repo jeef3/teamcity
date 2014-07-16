@@ -46,3 +46,11 @@ describe 'API :: Builds', ->
       .statistics ->
 
     expect(client).to.haveCalled 'get', '/app/rest/builds/buildType:(id:bt9)/statistics'
+
+  it 'should get a single build statistic', ->
+    builds.by
+      .buildType(id: 'bt9')
+      .locate()
+      .statistics 'BuildDuration', ->
+
+    expect(client).to.haveCalled 'get', '/app/rest/builds/buildType:(id:bt9)/statistics/BuildDuration'

@@ -11,7 +11,10 @@ class Builds extends Locatable
     @client._get '/downloadBuildLog.html', buildId: @id
     this
 
-  statistics: (cb) ->
-    @client._get @located('statistics')
+  statistics: (name, cb) ->
+    if !cb
+      @client._get @located('statistics')
+    else
+      @client._get @located("statistics/#{name}")
 
 module.exports = Builds
