@@ -14,29 +14,29 @@ describe 'API :: Projects', ->
 
   it 'should get the project info', ->
     projects 1, ->
-    expect(client).to.haveCalled 'get', '/projects/1'
+    expect(client).to.haveCalled 'get', '/app/rest/projects/1'
 
   it 'should get all projects', ->
     projects ->
-    expect(client).to.haveCalled 'get', '/projects'
+    expect(client).to.haveCalled 'get', '/app/rest/projects'
 
   it 'should get projects by project locator', ->
     locator = new ProjectLocator()
       .name 'project-one'
 
     projects locator, ->
-    expect(client).to.haveCalled 'get', '/projects', locator: locator.compile()
+    expect(client).to.haveCalled 'get', '/app/rest/projects', locator: locator.compile()
 
   it 'should get project (by id) build types', ->
     projects(1).buildTypes ->
-    expect(client).to.haveCalled 'get', '/projects/1/buildTypes'
+    expect(client).to.haveCalled 'get', '/app/rest/projects/1/buildTypes'
 
   it 'should get project (by locator) build types', ->
     locator = new ProjectLocator()
       .name 'project-one'
 
     projects(locator).buildTypes ->
-    expect(client).to.haveCalled 'get', '/projects/name:project-one/buildTypes'
+    expect(client).to.haveCalled 'get', '/app/rest/projects/name:project-one/buildTypes'
 
   xit 'should get project (by id) parameters', ->
 
@@ -45,4 +45,4 @@ describe 'API :: Projects', ->
       .name 'project-one'
 
     projects(locator).parameters 'param-one', ->
-    expect(client).to.haveCalled 'get', '/projects/name:project-one/parameters/param-one'
+    expect(client).to.haveCalled 'get', '/app/rest/projects/name:project-one/parameters/param-one'
