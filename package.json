@@ -1,13 +1,20 @@
 {
   "name": "teamcity",
   "version": "0.0.6",
-  "description": "TeamCity API",
-  "author": "Jeff Knaggs",
+  "description": "TeamCity API for NodeJS",
   "license": "MIT",
-  "keywords": [
-    "teamcity"
+  "repository": "jeef3/teamcity",
+  "maintainers": [
+    "Jeff Knaggs <mail@jeef3.com>"
   ],
+  "scripts": {
+    "test": "gulp test"
+  }
   "main": "lib/teamcity",
+  "keywords": [
+    "teamcity",
+    "api"
+  ],
   "dependencies": {
     "request": "^2.34.0"
   },
@@ -19,8 +26,5 @@
     "gulp-load-plugins": "^0.5.3",
     "gulp-mocha": "^0.5.1",
     "rimraf": "^2.2.8"
-  },
-  "scripts": {
-    "test": "gulp test"
   }
 }
