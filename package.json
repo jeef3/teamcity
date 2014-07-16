@@ -8,7 +8,7 @@
     "Jeff Knaggs <mail@jeef3.com>"
   ],
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --compilers coffee:coffee-script/register",
+    "test": "mocha --compilers coffee:coffee-script/register",
     "prepublish": "gulp build"
   },
   "main": "lib/teamcity",
@@ -26,6 +26,7 @@
     "gulp-coffee": "^2.1.1",
     "gulp-load-plugins": "^0.5.3",
     "gulp-mocha": "^0.5.1",
+    "mocha": "^1.20.1",
     "rimraf": "^2.2.8"
   }
 }
