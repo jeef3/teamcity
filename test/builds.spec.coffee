@@ -13,7 +13,7 @@ describe 'API :: Builds', ->
     builds = require('../src/builds')(client)
 
   it 'should get the build info', ->
-    builds 1
+    builds 1, ->
     expect(client).to.haveCalled 'get', '/app/rest/builds/1'
 
   it 'should get all builds', ->
@@ -24,12 +24,16 @@ describe 'API :: Builds', ->
     locator = new BuildLocator()
       .buildType id: 1234
 
-    builds locator
+    builds locator, ->
     expect(client).to.haveCalled 'get', '/app/rest/builds', locator: locator.compile()
 
   it 'should get the build log', ->
-    locator = new BuildLocator()
-      .buildType id: 1234
+    expect(->
+      locator = new BuildLocator()
+        .buildType id: 1234
 
-    builds(locator).buildLog ->
-    expect(client).to.haveCalled 'get', '/downloadBuildLog.html', locator: locator.compile()
+      builds(locator).buildLog ->
+    ).to.throw 'Can only get build log by id'
+
+    builds(1234).buildLog ->
+    expect(client).to.haveCalled 'get', '/downloadBuildLog.html', buildId: 1234
