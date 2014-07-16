@@ -21,6 +21,6 @@ class Locatable
     this
 
   located: (path) ->
-    "#{@path}/#{@byLocator.compile()}#{path}"
+    "#{@path}/#{@byLocator.compile()}/#{path}"
 
 module.exports = Locatable

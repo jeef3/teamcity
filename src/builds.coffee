@@ -12,6 +12,6 @@ class Builds extends Locatable
     this
 
   statistics: (cb) ->
-    @client._get @located('/statistics')
+    @client._get @located('statistics')
 
 module.exports = Builds
