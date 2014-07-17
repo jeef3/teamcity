@@ -1,12 +1,8 @@
-module.exports = (client) ->
-  (locator, cb) ->
-    if typeof locator is 'function'
-      cb = locator
-      client._get '/app/rest/buildTypes', cb
+Locatable = require './locatable'
+BuildTypeLocator = require './locators/build-type-locator'
 
-    else if locator.compile
-      client._get '/app/rest/buildTypes', locator: locator.compile(), cb
+class BuildTypes extends Locatable
+  constructor: (@client) ->
+    super @client, new BuildTypeLocator
 
-    else
-      id = locator
-      client._get "/app/rest/buildTypes/#{id}", cb
+

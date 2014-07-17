@@ -21,23 +21,23 @@ class TeamCity
 
   # API
 
-  projects: (locator, cb) ->
-    require('./projects')(@)(locator, cb)
+  projects: ->
+    new Projects @
 
-  buildTypes: (locator, cb) ->
-    require('./build-types')(@)(locator, cb)
+  buildTypes:  ->
+    new BuildTypes @
 
-  builds: (locator, cb) ->
-    require('./builds')(@)(locator, cb)
+  builds:
+    new Builds @
 
-  buildQueue: (locator, cb) ->
-    require('./build-queue')(@)(locator, cb)
+  buildQueue:
+    new BuildQueue @
 
-  changes: (locator, cb) ->
-    require('./changes')(@)(locator, cb)
+  changes:
+    new Changes @
 
-  vcsRootInstances: (locator, cb) ->
-    require('./vcs-root-instances')(@)(locator, cb)
+  vcsRootInstances:
+    new VcsRootInstances @
 
 
   # Locators

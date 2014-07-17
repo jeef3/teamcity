@@ -3,7 +3,6 @@ require './have-called'
 
 Client = require './mock/client.mock'
 Builds = require '../src/builds'
-BuildLocator = require '../src/locators/build-locator'
 
 describe 'API :: Builds', ->
   client = null
@@ -16,6 +15,10 @@ describe 'API :: Builds', ->
   it 'should get the build info', ->
     builds.get 1234, ->
     expect(client).to.haveCalled 'get', '/app/rest/builds/1234'
+
+  it 'should delete a build', ->
+    builds.delete 1234, ->
+    expect(client).to.haveCalled 'delete', '/app/rest/builds/1234'
 
   it 'should get all builds', ->
     builds.all ->

@@ -1,18 +1,15 @@
 class Locatable
-  constructor: (@client, @byLocator) ->
-    name = @constructor.name.toLowerCase()
-    @path = "/app/rest/#{name}"
-
-    @by = @byLocator
+  constructor: (@client, @base, @locator) ->
+    @by = @locator
     @by.locate = (cb) =>
-      if cb then @client._get "#{@path}/#{@byLocator.compile()}", cb
+      if cb then @client._get "#{@path}/#{@locator.compile()}", cb
       this
 
   @path: (path) ->
     @prototype.path = path
 
   get: (id, cb) ->
-    if cb then @client._get "#{@path}/#{id}"
+    if cb then @client._get "#{@path}/id:#{id}"
     @id = id
     this
 
@@ -21,6 +18,12 @@ class Locatable
     this
 
   located: (path) ->
-    "#{@path}/#{@byLocator.compile()}/#{path}"
+    if path
+      "#{@path}/#{@locator.compile()}/#{path}"
+    else
+      "#{@path}/#{@locator.compile()}"
+
+  locatorNeeded: ->
+    throw new Error 'Locator required' unless @locator
 
 module.exports = Locatable
