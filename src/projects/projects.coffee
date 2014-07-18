@@ -5,20 +5,19 @@ class Projects extends Locatable
   @path '/app/rest/projects'
 
   constructor: (@client) ->
-    super @client, new ProjectLocator
+    super @client, null, ProjectLocator
+
+  create: (project, cb) ->
+    @client._post '/app/rest/projects', project, cb
 
   delete: ->
-    @locatorNeeded()
-    @client._delete @located()
+    @client._delete @getPath()
 
   parameters: ->
-    @locatorNeeded()
-    new ProjectParameters @client
+    new ProjectParameters @client, @
 
   buildTypes: ->
-    @locatorNeeded()
-    new ProjectBuildTypes @client
+    new ProjectBuildTypes @client, @
 
   templates: ->
-    @locatorNeeded()
     new ProjectTemplates @client, @

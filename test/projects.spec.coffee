@@ -42,6 +42,10 @@ describe 'API :: Projects', ->
     projects.by name: 'Project One', ->
     expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One'
 
+  it 'should get project fields', ->
+    projects.by name: 'Project One'
+      .field 'field-one', ->
+
   describe 'buildTypes', ->
     # "/{projectLocator}/buildTypes"
     it 'should get project, build types', ->
@@ -71,6 +75,7 @@ describe 'API :: Projects', ->
     it 'should get project, parameters parameter', ->
       projects.by name: 'Project One'
         .parameters.get 'param-one', ->
+
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/parameters/param-one'
 
