@@ -34,7 +34,7 @@ teamcity.builds.get(1234, function (err, build) {
 Also has support for TeamCity locators. You can use the locator classes, or the supplied shortcuts:
 
 ``` JavaScript
-var buildsSinceBuild = teamcity.changesLocator()
+var buildsSinceBuild = new BuildLocator()
   .buildType({id: 'bt9'})
   .sinceChange(5678);
 
