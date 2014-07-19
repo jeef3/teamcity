@@ -39,7 +39,7 @@ var buildsSinceBuild = new BuildLocator()
   .sinceChange(5678);
 
 // http://teamcity:8111/app/rest/changes/?locator=buildType:(id:bt9),sinceChange:5678
-teamcity.changes(buildsSinceBuild, function (changes) {
+teamcity.changes.by(buildsSinceBuild, function (changes) {
   // Do stuff with changes
 });
 
