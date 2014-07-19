@@ -12,6 +12,9 @@ class ParameterSet
   set: (param, value, cb) ->
     @client._post @getPath(param), value, cb
 
+  all: (cb) ->
+    @client._get @getPath(), cb
+
   getPath: (param) ->
     if @parent then path = @parent.getPath()
 

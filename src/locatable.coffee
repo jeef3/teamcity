@@ -29,9 +29,13 @@ class Locatable
 
     this
 
-  getPath: ->
+  getPath: (child) ->
     throw new Error 'Locator is required to get path' unless @locator
-    debugger
-    "#{@constructor._path}/#{@locator.compile()}"
+    path = "#{@constructor._path}/#{@locator.compile()}"
+
+    if child then path += "/#{child}"
+
+    path
+
 
 module.exports = Locatable
