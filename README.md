@@ -26,12 +26,12 @@ var teamcity = new TeamCity({
 });
 
 // Get some builds
-teamcity.builds(1234, function (build) {
+teamcity.builds.get(1234, function (err, build) {
   // Do stuff with build
-})
+})l
 ```
 
-Also has support for TeamCity locators
+Also has support for TeamCity locators. You can use the locator classes, or the supplied shortcuts:
 
 ``` JavaScript
 var buildsSinceBuild = teamcity.changesLocator()
@@ -42,12 +42,23 @@ var buildsSinceBuild = teamcity.changesLocator()
 teamcity.changes(buildsSinceBuild, function (changes) {
   // Do stuff with changes
 });
+
+// With shortcuts
+teamcity.changes.by({
+    buildType: { id: 'bt9' },
+    sinceChange: 5678
+  }, function (changes) {
+    // Do stuff with changes
+  });
 ```
 
-And nested parameters
+Nested API calls are also supported
 
 ``` JavaScript
-teamcity.projects('project-one').parameters('param-one', function (value) {
-  // Do stuff with value
+// http://teamcity:8111/app/rest/projects/id:project1/buildTypes/id:bt1/builds/user:(id:1)
+teamcity.projects.get('project1')
+  .buildTypes.get('bt1')
+  .builds.by({ user: { id: 1 } })
+  // Do stuff with build
 });
 ```
