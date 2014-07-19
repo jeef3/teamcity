@@ -2,7 +2,7 @@ expect = require('chai').expect
 require './have-called'
 
 Client = require './mock/client.mock'
-Projects = require '../src/projects'
+Projects = require '../src/projects/projects'
 
 describe 'API :: Projects', ->
   client = null
@@ -11,13 +11,12 @@ describe 'API :: Projects', ->
   beforeEach ->
     client = new Client()
     projects = new Projects client
-  # "/{projectLocator}/templates"
-  # "/{projectLocator}/buildTypes/{btLocator}/builds"
-  # "/{projectLocator}/buildTypes/{btLocator}/builds/{buildLocator}"
-  # "/{projectLocator}/{field}"
-  # "/{projectLocator}/buildTypes/{btLocator}"
-  # "/{projectLocator}/templates/{btLocator}"
-  # "/{projectLocator}/buildTypes/{btLocator}/{field}"
+    # "/{projectLocator}/templates"
+    # "/{projectLocator}/buildTypes/{btLocator}/builds"
+    # "/{projectLocator}/buildTypes/{btLocator}/builds/{buildLocator}"
+    # "/{projectLocator}/buildTypes/{btLocator}"
+    # "/{projectLocator}/templates/{btLocator}"
+    # "/{projectLocator}/buildTypes/{btLocator}/{field}"
 
   it 'should get the project', ->
     projects.get 'project-one', ->
@@ -42,9 +41,12 @@ describe 'API :: Projects', ->
     projects.by name: 'Project One', ->
     expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One'
 
+  # "/{projectLocator}/{field}"
   it 'should get project fields', ->
     projects.by name: 'Project One'
       .field 'field-one', ->
+
+    expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/field-one'
 
   describe 'buildTypes', ->
     # "/{projectLocator}/buildTypes"
@@ -75,7 +77,6 @@ describe 'API :: Projects', ->
     it 'should get project, parameters parameter', ->
       projects.by name: 'Project One'
         .parameters.get 'param-one', ->
-
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/parameters/param-one'
 

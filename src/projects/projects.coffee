@@ -1,23 +1,31 @@
-Locatable = require './locatable'
-ProjectLocator = require './locators/project-locator'
+Locatable = require '../locatable'
+ProjectLocator = require '../locators/project-locator'
+ProjectParameters = require './project-parameters'
+ProjectBuildTypes = require './project-build-types'
 
 class Projects extends Locatable
   @path '/app/rest/projects'
+  @locator ProjectLocator
 
   constructor: (@client) ->
-    super @client, null, ProjectLocator
+    super @client, null
+
+    Object.defineProperty @,
+      'parameters',
+      get: -> new ProjectParameters @client, @
+
+    Object.defineProperty @,
+      'buildTypes',
+      get: -> new ProjectBuildTypes @client, @
+
+    # Object.defineProperty @,
+    #   'templates',
+    #   get: -> new ProjectTemplates @client, @
 
   create: (project, cb) ->
-    @client._post '/app/rest/projects', project, cb
+    @client._post @getPath(), project, cb
 
   delete: ->
     @client._delete @getPath()
 
-  parameters: ->
-    new ProjectParameters @client, @
-
-  buildTypes: ->
-    new ProjectBuildTypes @client, @
-
-  templates: ->
-    new ProjectTemplates @client, @
+module.exports = Projects

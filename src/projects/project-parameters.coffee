@@ -1,5 +1,6 @@
-class ProjectParameters extends ParameterSet
+ParameterSet = require '../parameter-set'
 
+class ProjectParameters extends ParameterSet
   @path '/parameters'
 
   @parameters [
@@ -8,3 +9,6 @@ class ProjectParameters extends ParameterSet
   ]
 
   constructor: (@client, @parent) ->
+    super @client, @parent
+
+module.exports = ProjectParameters
