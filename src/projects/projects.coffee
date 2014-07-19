@@ -16,7 +16,8 @@ class Projects extends Locatable
 
     Object.defineProperty @,
       'buildTypes',
-      get: -> new ProjectBuildTypes @client, @
+      get: ->
+        new ProjectBuildTypes @client, @
 
     # Object.defineProperty @,
     #   'templates',
@@ -25,7 +26,10 @@ class Projects extends Locatable
   create: (project, cb) ->
     @client._post @getPath(), project, cb
 
-  delete: ->
-    @client._delete @getPath()
+  delete: (cb) ->
+    @client._delete @getPath(), cb
+
+  field: (field, cb) ->
+    @client._get @getPath(field), cb
 
 module.exports = Projects

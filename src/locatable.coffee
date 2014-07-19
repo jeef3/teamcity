@@ -16,26 +16,31 @@ class Locatable
 
   all: (cb) ->
     @locator = null
-    if cb then @client._get @getPath, cb
+    if cb then @client._get @getPath(), cb
     this
 
-  by: (locator) ->
-    debugger
+  by: (locator, cb) ->
     if locator.compile
       @locator = locator
     else
       @locator = new @constructor._locator
       @locator.locators = locator
 
+    if cb then @client._get @getPath(), cb
+
     this
 
   getPath: (child) ->
-    throw new Error 'Locator is required to get path' unless @locator
-    path = "#{@constructor._path}/#{@locator.compile()}"
+    parts = []
 
-    if child then path += "/#{child}"
+    if @parent then parts.push @parent.getPath()
 
-    path
+    parts.push @constructor._path
+
+    if @locator then parts.push "/#{@locator.compile()}"
+    if child then parts.push "/#{child}"
+
+    parts.join ''
 
 
 module.exports = Locatable

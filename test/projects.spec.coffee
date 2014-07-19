@@ -50,14 +50,14 @@ describe 'API :: Projects', ->
 
   describe 'buildTypes', ->
     # "/{projectLocator}/buildTypes"
-    it 'should get project, build types', ->
+    it 'should get build types', ->
       projects.by name: 'Project One'
         .buildTypes.all ->
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes'
 
     # "/{projectLocator}/buildTypes/{btLocator}/builds/{buildLocator}/{field}"
-    it 'should get a projects, build types, builds, field', ->
+    it 'should get build types, builds, field', ->
       projects.by name: 'Project One'
         .buildTypes.by id: 'bt9'
         .builds.by user: id: 1
@@ -65,23 +65,30 @@ describe 'API :: Projects', ->
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds/user:(id:1)/startDate'
 
+      projects.by name: 'Project One'
+        .buildTypes.by id: 'bt9'
+        .builds.by user: id: 1
+        .field 'endDate', ->
+
+      expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds/user:(id:1)/endDate'
+
   describe 'parameters', ->
     # "/{projectLocator}/parameters"
-    it 'should get project, parameters', ->
+    it 'should get parameters', ->
       projects.by name: 'Project One'
         .parameters.all ->
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/parameters'
 
     # "/{projectLocator}/parameters/{name}"
-    it 'should get project, parameters parameter', ->
+    it 'should get parameters parameter', ->
       projects.by name: 'Project One'
         .parameters.get 'param-one', ->
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/parameters/param-one'
 
     # "/{projectLocator}/parameters/{name}"
-    it 'should set project parameters parameter', ->
+    it 'should set parameters parameter', ->
       projects.by name: 'Project One'
         .parameters.set 'param-one', 'param-one-value', ->
 

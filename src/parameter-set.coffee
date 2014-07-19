@@ -16,12 +16,14 @@ class ParameterSet
     @client._get @getPath(), cb
 
   getPath: (param) ->
-    if @parent then path = @parent.getPath()
+    parts = []
 
-    path += @constructor._path
+    if @parent then parts.push @parent.getPath()
 
-    if param then path += "/#{param}"
+    parts.push  @constructor._path
 
-    path
+    if param then parts.push "/#{param}"
+
+    parts.join ''
 
 module.exports = ParameterSet
