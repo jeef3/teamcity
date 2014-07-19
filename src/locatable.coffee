@@ -8,7 +8,7 @@ class Locatable
   constructor: (@client, @parent) ->
 
   get: (id, cb) ->
-    @locator = new @locatorType
+    @locator = new @constructor._locator
     @locator.id id
 
     if cb then @client._get @getPath(), cb

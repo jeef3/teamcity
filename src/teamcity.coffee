@@ -97,7 +97,7 @@ class TeamCity
   _get: (path, params, cb) ->
     options =
       method: 'GET'
-      url: @_url(path)
+      url: @_url path
 
     if typeof params is 'function'
       cb = params
@@ -106,11 +106,10 @@ class TeamCity
 
     @_call options, cb
 
-
   _post: (path, data, cb) ->
     options =
       method: 'POST'
-      url: @_url(path)
+      url: @_url path
       json: data
 
     @_call options, cb
@@ -118,8 +117,15 @@ class TeamCity
   _put: (path, data, cb) ->
     options =
       method: 'PUT'
-      url: @_url(path)
+      url: @_url path
       json: data
+
+    @_call options, cb
+
+  _destroy: (path, cb) ->
+    options =
+      method: 'DELETE'
+      url: @_url path
 
     @_call options, cb
 

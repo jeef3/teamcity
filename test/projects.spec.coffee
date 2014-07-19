@@ -19,12 +19,12 @@ describe 'API :: Projects', ->
     # "/{projectLocator}/buildTypes/{btLocator}/{field}"
 
   it 'should get the project', ->
-    projects.get 'project-one', ->
-    expect(client).to.haveCalled 'get', '/app/rest/projects/id:project-one'
+    projects.get 'Project One', ->
+    expect(client).to.haveCalled 'get', '/app/rest/projects/id:Project One'
 
-  it 'should delete the project', ->
-    projects.delete 'project-one', ->
-    expect(client).to.haveCalled 'delete', '/app/rest/projects/id:project-one'
+  it 'should destroy the project', ->
+    projects.get('Project One').destroy ->
+    expect(client).to.haveCalled 'delete', '/app/rest/projects/id:Project One'
 
   it 'should create a project', ->
     projectData = {}

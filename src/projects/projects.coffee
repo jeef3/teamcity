@@ -16,8 +16,7 @@ class Projects extends Locatable
 
     Object.defineProperty @,
       'buildTypes',
-      get: ->
-        new ProjectBuildTypes @client, @
+      get: -> new ProjectBuildTypes @client, @
 
     # Object.defineProperty @,
     #   'templates',
@@ -26,8 +25,9 @@ class Projects extends Locatable
   create: (project, cb) ->
     @client._post @getPath(), project, cb
 
-  delete: (cb) ->
-    @client._delete @getPath(), cb
+  destroy: (cb) ->
+    throw new Error 'Project locator required to destroy' unless @locator
+    @client._destroy @getPath(), cb
 
   field: (field, cb) ->
     @client._get @getPath(field), cb
