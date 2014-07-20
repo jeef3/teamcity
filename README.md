@@ -6,7 +6,7 @@
 
 ## Under Construction
 
-This library is still under heavy construction.
+The TeamCity API is pretty big, so this library is largly incomplete.
 
 ## Installation
 
