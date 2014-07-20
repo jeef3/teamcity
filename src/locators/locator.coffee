@@ -1,8 +1,4 @@
 class Locator
-
-  constructor: ->
-    @locators = {}
-
   @dimensions: (dimensions) ->
     @addDimension(d) for d in dimensions
 
@@ -14,6 +10,9 @@ class Locator
         @locators[name] = value
       this
     this
+
+  constructor: ->
+    @locators = {}
 
   compile: ->
     str = ''

@@ -3,6 +3,17 @@ class ParameterSet
     @_path = path
 
   @parameters: (parameters) ->
+    @addParameter(p) for p in parameters
+
+  @addParameter = (name) ->
+    @prototype[name] = (value, cb) ->
+      if typeof value is 'function'
+        cb = value
+        @get name, cb
+      else
+        @set name, value, cb
+      this
+    this
 
   constructor: (@client, @parent) ->
 

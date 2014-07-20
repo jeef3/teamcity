@@ -2,7 +2,7 @@ expect = require('chai').expect
 require './have-called'
 
 Client = require './mock/client.mock'
-Builds = require '../src/builds'
+Builds = require '../src/builds/builds'
 
 describe 'API :: Builds', ->
   client = null
@@ -12,11 +12,11 @@ describe 'API :: Builds', ->
     client = new Client
     builds = new Builds client
 
-  it 'should get the build info', ->
+  it 'should get the build', ->
     builds.get 1234, ->
     expect(client).to.haveCalled 'get', '/app/rest/builds/id:1234'
 
-  it 'should delete a build', ->
+  it 'should destroy a build', ->
     builds.get(1234).destroy ->
     expect(client).to.haveCalled 'delete', '/app/rest/builds/id:1234'
 
@@ -39,12 +39,17 @@ describe 'API :: Builds', ->
 
   it 'should get build statistics', ->
     builds.by buildType: id: 'bt9'
-      .statistics ->
+      .statistics.all ->
 
     expect(client).to.haveCalled 'get', '/app/rest/builds/buildType:(id:bt9)/statistics'
 
-  it 'should get a single build statistic', ->
+  it 'should get a build statistic', ->
     builds.by buildType: id: 'bt9'
-      .statistics 'BuildDuration', ->
+      .statistics.get 'BuildDuration', ->
+
+    expect(client).to.haveCalled 'get', '/app/rest/builds/buildType:(id:bt9)/statistics/BuildDuration'
+
+    builds.by buildType: id: 'bt9'
+      .statistics.BuildDuration ->
 
     expect(client).to.haveCalled 'get', '/app/rest/builds/buildType:(id:bt9)/statistics/BuildDuration'

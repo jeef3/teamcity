@@ -1,12 +1,17 @@
-Locatable = require './locatable'
-BuildLocator = require './locators/build-locator'
+Locatable = require '../locatable'
+BuildLocator = require '../locators/build-locator'
+BuildStatistics = require './build-statistics'
 
 class Builds extends Locatable
   @path '/app/rest/builds'
   @locator BuildLocator
 
-  constructor: (@client) ->
-    super @client, null
+  constructor: (@client, @parent) ->
+    super @client, @parent
+
+    Object.defineProperty @,
+      'statistics',
+      get: -> return new BuildStatistics @client, @
 
   destroy: (cb) ->
     throw new Error 'Build locator required to destroy' unless @locator
@@ -17,11 +22,5 @@ class Builds extends Locatable
 
     @client._get '/downloadBuildLog.html', buildId: @locator.locators.id
     this
-
-  statistics: (name, cb) ->
-    if !cb
-      @client._get @getPath('statistics'), cb
-    else
-      @client._get @getPath("statistics/#{name}"), cb
 
 module.exports = Builds

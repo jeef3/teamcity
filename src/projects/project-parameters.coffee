@@ -8,7 +8,4 @@ class ProjectParameters extends ParameterSet
     'finishDate'
   ]
 
-  constructor: (@client, @parent) ->
-    super @client, @parent
-
 module.exports = ProjectParameters
