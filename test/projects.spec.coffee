@@ -11,12 +11,6 @@ describe 'API :: Projects', ->
   beforeEach ->
     client = new Client()
     projects = new Projects client
-    # "/{projectLocator}/templates"
-    # "/{projectLocator}/buildTypes/{btLocator}/builds"
-    # "/{projectLocator}/buildTypes/{btLocator}/builds/{buildLocator}"
-    # "/{projectLocator}/buildTypes/{btLocator}"
-    # "/{projectLocator}/templates/{btLocator}"
-    # "/{projectLocator}/buildTypes/{btLocator}/{field}"
 
   it 'should get the project', ->
     projects.get 'Project One', ->
@@ -31,66 +25,101 @@ describe 'API :: Projects', ->
     projects.create projectData, ->
     expect(client).to.haveCalled 'post', '/app/rest/projects', projectData
 
-  # "/{projectLocator}"
   it 'should get all projects', ->
     projects.all ->
     expect(client).to.haveCalled 'get', '/app/rest/projects'
 
-  # "/{projectLocator}"
   it 'should get projects by project locator', ->
     projects.by name: 'Project One', ->
     expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One'
 
-  # "/{projectLocator}/{field}"
-  it 'should get project fields', ->
-    projects.by name: 'Project One'
-      .field 'field-one', ->
+  describe 'field', ->
+    it 'should get project fields', ->
+      projects.by name: 'Project One'
+        .field 'field-one', ->
 
-    expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/field-one'
+      expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/field-one'
 
   describe 'buildTypes', ->
-    # "/{projectLocator}/buildTypes"
     it 'should get build types', ->
       projects.by name: 'Project One'
         .buildTypes.all ->
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes'
 
-    # "/{projectLocator}/buildTypes/{btLocator}/builds/{buildLocator}/{field}"
-    it 'should get build types, builds, field', ->
+    it 'should get build types by locator', ->
       projects.by name: 'Project One'
-        .buildTypes.by id: 'bt9'
-        .builds.by user: id: 1
-        .startDate ->
+        .buildTypes.by id: 'bt9', ->
 
-      expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds/user:(id:1)/startDate'
+      expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9'
 
-      projects.by name: 'Project One'
-        .buildTypes.by id: 'bt9'
-        .builds.by user: id: 1
-        .field 'endDate', ->
+    describe 'field', ->
+      it 'should get buildTypes field', ->
+        projects.by name: 'Project One'
+          .buildTypes.by id: 'bt9'
+          .field 'field-one', ->
 
-      expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds/user:(id:1)/endDate'
+        expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/field-one'
+
+    describe 'builds', ->
+      it 'should get builds', ->
+        projects.by name: 'Project One'
+          .buildTypes.by id: 'bt9'
+          .builds.all ->
+
+        expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds'
+
+      it 'should get builds by locator', ->
+        projects.by name: 'Project One'
+          .buildTypes.by id: 'bt9'
+          .builds.by user: id: 1, ->
+
+        expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds/user:(id:1)'
+
+      describe 'field', ->
+        it 'should get the field', ->
+          projects.by name: 'Project One'
+            .buildTypes.by id: 'bt9'
+            .builds.by user: id: 1
+            .startDate ->
+
+          expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds/user:(id:1)/startDate'
+
+          projects.by name: 'Project One'
+            .buildTypes.by id: 'bt9'
+            .builds.by user: id: 1
+            .field 'field-one', ->
+
+          expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds/user:(id:1)/field-one'
 
   describe 'parameters', ->
-    # "/{projectLocator}/parameters"
     it 'should get parameters', ->
       projects.by name: 'Project One'
         .parameters.all ->
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/parameters'
 
-    # "/{projectLocator}/parameters/{name}"
     it 'should get parameters parameter', ->
       projects.by name: 'Project One'
         .parameters.get 'param-one', ->
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/parameters/param-one'
 
-    # "/{projectLocator}/parameters/{name}"
     it 'should set parameters parameter', ->
       projects.by name: 'Project One'
         .parameters.set 'param-one', 'param-one-value', ->
 
       expect(client).to.haveCalled 'post', '/app/rest/projects/name:Project One/parameters/param-one', 'param-one-value'
 
+  describe 'templates', ->
+    it 'should get templates', ->
+      projects.by name: 'Project One'
+        .templates.all ->
+
+      expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/templates'
+
+    it 'should get templates by build locator', ->
+      projects.by name: 'Project One'
+        .templates.by id: 'bt9', ->
+
+      expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/templates/id:bt9'
