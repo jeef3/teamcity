@@ -1,12 +1,8 @@
-module.exports = (client) ->
-  (locator, cb) ->
-    if typeof locator is 'function'
-      cb = locator
-      client._get '/app/rest/vcs-root-instances', cb
+Locatable = require './locatable'
+VcsRootInstanceLocator = require './locators/vcs-root-instance-locator'
 
-    else if locator.compile
-      client._get '/app/rest/vcs-root-instances', locator: locator.compile(), cb
+class VcsRootInstances extends Locatable
+  @path '/app/rest/vcs-root-instances'
+  @locator VcsRootInstanceLocator
 
-    else
-      id = locator
-      client._get "/app/rest/vcs-root-instances/#{id}", cb
+module.exports = VcsRootInstances

@@ -5,7 +5,4 @@ class ProjectTemplates extends Locatable
   @path '/templates'
   @locator BuildTypeLocator
 
-  constructor: (@client, @parent) ->
-    super @client, @parent
-
 module.exports = ProjectTemplates
