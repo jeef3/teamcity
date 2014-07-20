@@ -21,23 +21,23 @@ class TeamCity
 
   # API
 
-  projects: (locator, cb) ->
-    require('./projects')(@)(locator, cb)
+  projects: ->
+    new Projects @
 
-  buildTypes: (locator, cb) ->
-    require('./build-types')(@)(locator, cb)
+  buildTypes:  ->
+    new BuildTypes @
 
-  builds: (locator, cb) ->
-    require('./builds')(@)(locator, cb)
+  builds:
+    new Builds @
 
-  buildQueue: (locator, cb) ->
-    require('./build-queue')(@)(locator, cb)
+  buildQueue:
+    new BuildQueue @
 
-  changes: (locator, cb) ->
-    require('./changes')(@)(locator, cb)
+  changes:
+    new Changes @
 
-  vcsRootInstances: (locator, cb) ->
-    require('./vcs-root-instances')(@)(locator, cb)
+  vcsRootInstances:
+    new VcsRootInstances @
 
 
   # Locators
@@ -97,7 +97,7 @@ class TeamCity
   _get: (path, params, cb) ->
     options =
       method: 'GET'
-      url: @_url(path)
+      url: @_url path
 
     if typeof params is 'function'
       cb = params
@@ -106,11 +106,10 @@ class TeamCity
 
     @_call options, cb
 
-
   _post: (path, data, cb) ->
     options =
       method: 'POST'
-      url: @_url(path)
+      url: @_url path
       json: data
 
     @_call options, cb
@@ -118,8 +117,15 @@ class TeamCity
   _put: (path, data, cb) ->
     options =
       method: 'PUT'
-      url: @_url(path)
+      url: @_url path
       json: data
+
+    @_call options, cb
+
+  _destroy: (path, cb) ->
+    options =
+      method: 'DELETE'
+      url: @_url path
 
     @_call options, cb
 

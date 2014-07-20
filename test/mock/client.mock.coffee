@@ -15,6 +15,10 @@ class Client
     @calledPath = path
     @calledData = data
 
+  _destroy: (path, cb) ->
+    @calledVerb = 'delete'
+    @calledPath = path
+
   verb: -> @calledVerb
   path: -> @calledPath
   data: -> @calledData

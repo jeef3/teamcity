@@ -2,7 +2,7 @@ expect = require('chai').expect
 require './have-called'
 
 Client = require './mock/client.mock'
-BuildLocator = require '../src/locators/build-locator'
+Builds = require '../src/builds/builds'
 
 describe 'API :: Builds', ->
   client = null
@@ -10,30 +10,46 @@ describe 'API :: Builds', ->
 
   beforeEach ->
     client = new Client
-    builds = require('../src/builds')(client)
+    builds = new Builds client
 
-  it 'should get the build info', ->
-    builds 1, ->
-    expect(client).to.haveCalled 'get', '/app/rest/builds/1'
+  it 'should get the build', ->
+    builds.get 1234, ->
+    expect(client).to.haveCalled 'get', '/app/rest/builds/id:1234'
+
+  it 'should destroy a build', ->
+    builds.get(1234).destroy ->
+    expect(client).to.haveCalled 'delete', '/app/rest/builds/id:1234'
 
   it 'should get all builds', ->
-    builds ->
+    builds.all ->
     expect(client).to.haveCalled 'get', '/app/rest/builds'
 
   it 'should get builds by build locator', ->
-    locator = new BuildLocator()
-      .buildType id: 1234
-
-    builds locator, ->
-    expect(client).to.haveCalled 'get', '/app/rest/builds', locator: locator.compile()
+    builds.by buildType: id: 'bt9', ->
+    expect(client).to.haveCalled 'get', '/app/rest/builds/buildType:(id:bt9)'
 
   it 'should get the build log', ->
     expect(->
-      locator = new BuildLocator()
-        .buildType id: 1234
+      builds.by buiodType: id: 'bt9'
+        .buildLog ->
+    ).to.throw 'Can only get build log by build id'
 
-      builds(locator).buildLog ->
-    ).to.throw 'Can only get build log by id'
-
-    builds(1234).buildLog ->
+    builds.get(1234).buildLog ->
     expect(client).to.haveCalled 'get', '/downloadBuildLog.html', buildId: 1234
+
+  it 'should get build statistics', ->
+    builds.by buildType: id: 'bt9'
+      .statistics.all ->
+
+    expect(client).to.haveCalled 'get', '/app/rest/builds/buildType:(id:bt9)/statistics'
+
+  it 'should get a build statistic', ->
+    builds.by buildType: id: 'bt9'
+      .statistics.get 'BuildDuration', ->
+
+    expect(client).to.haveCalled 'get', '/app/rest/builds/buildType:(id:bt9)/statistics/BuildDuration'
+
+    builds.by buildType: id: 'bt9'
+      .statistics.BuildDuration ->
+
+    expect(client).to.haveCalled 'get', '/app/rest/builds/buildType:(id:bt9)/statistics/BuildDuration'

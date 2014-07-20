@@ -1,12 +1,8 @@
-module.exports = (client) ->
-  (locator, cb) ->
-    if typeof locator is 'function'
-      cb = locator
-      client._get '/app/rest/changes', cb
+Locatable = require './locatable'
+ChangeLocator = require './locators/change-locator'
 
-    else if locator.compile
-      client._get '/app/rest/changes', locator: locator.compile(), cb
+class Changes extends Locatable
+  @path '/app/rest/changes'
+  @locator ChangeLocator
 
-    else
-      id = locator
-      client._get "/app/rest/changes/#{id}", cb
+module.exports = Changes

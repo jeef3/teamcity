@@ -2,6 +2,7 @@ Locator = require './locator'
 
 class BuildLocator extends Locator
   @dimensions [
+    'id'
     'buildType'
     'tags'
     'status'

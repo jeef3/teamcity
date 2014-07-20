@@ -2,7 +2,7 @@ expect = require('chai').expect
 require './have-called'
 
 Client = require './mock/client.mock'
-ChangeLocator = require '../src/locators/change-locator'
+Changes = require '../src/changes'
 
 describe 'API :: Changes', ->
   client = null
@@ -10,19 +10,16 @@ describe 'API :: Changes', ->
 
   beforeEach ->
     client = new Client()
-    changes = require('../src/changes')(client)
+    changes = new Changes client
 
   it 'should get the change info', ->
-    changes(1)
-    expect(client).to.haveCalled 'get', '/app/rest/changes/1'
+    changes.get 1, ->
+    expect(client).to.haveCalled 'get', '/app/rest/changes/id:1'
 
   it 'should get all changes', ->
-    changes ->
+    changes.all ->
     expect(client).to.haveCalled 'get', '/app/rest/changes'
 
   it 'should get changes by change locator', ->
-    locator = new ChangeLocator()
-      .buildType id: 1234
-
-    changes(locator)
-    expect(client).to.haveCalled 'get', '/app/rest/changes', locator: locator.compile()
+    changes.by buildType: id: 'bt9', ->
+    expect(client).to.haveCalled 'get', '/app/rest/changes/buildType:(id:bt9)'

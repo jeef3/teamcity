@@ -2,7 +2,7 @@ expect = require('chai').expect
 require './have-called'
 
 Client = require './mock/client.mock'
-ProjectLocator = require '../src/locators/project-locator'
+Projects = require '../src/projects/projects'
 
 describe 'API :: Projects', ->
   client = null
@@ -10,39 +10,116 @@ describe 'API :: Projects', ->
 
   beforeEach ->
     client = new Client()
-    projects = require('../src/projects')(client)
+    projects = new Projects client
 
-  it 'should get the project info', ->
-    projects 1, ->
-    expect(client).to.haveCalled 'get', '/app/rest/projects/1'
+  it 'should get the project', ->
+    projects.get 'Project One', ->
+    expect(client).to.haveCalled 'get', '/app/rest/projects/id:Project One'
+
+  it 'should destroy the project', ->
+    projects.get('Project One').destroy ->
+    expect(client).to.haveCalled 'delete', '/app/rest/projects/id:Project One'
+
+  it 'should create a project', ->
+    projectData = {}
+    projects.create projectData, ->
+    expect(client).to.haveCalled 'post', '/app/rest/projects', projectData
 
   it 'should get all projects', ->
-    projects ->
+    projects.all ->
     expect(client).to.haveCalled 'get', '/app/rest/projects'
 
   it 'should get projects by project locator', ->
-    locator = new ProjectLocator()
-      .name 'project-one'
+    projects.by name: 'Project One', ->
+    expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One'
 
-    projects locator, ->
-    expect(client).to.haveCalled 'get', '/app/rest/projects', locator: locator.compile()
+  describe 'field', ->
+    it 'should get project fields', ->
+      projects.by name: 'Project One'
+        .field 'field-one', ->
 
-  it 'should get project (by id) build types', ->
-    projects(1).buildTypes ->
-    expect(client).to.haveCalled 'get', '/app/rest/projects/1/buildTypes'
+      expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/field-one'
 
-  it 'should get project (by locator) build types', ->
-    locator = new ProjectLocator()
-      .name 'project-one'
+  describe 'buildTypes', ->
+    it 'should get build types', ->
+      projects.by name: 'Project One'
+        .buildTypes.all ->
 
-    projects(locator).buildTypes ->
-    expect(client).to.haveCalled 'get', '/app/rest/projects/name:project-one/buildTypes'
+      expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes'
 
-  xit 'should get project (by id) parameters', ->
+    it 'should get build types by locator', ->
+      projects.by name: 'Project One'
+        .buildTypes.by id: 'bt9', ->
 
-  it 'should get project (by locator) parameters', ->
-    locator = new ProjectLocator()
-      .name 'project-one'
+      expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9'
 
-    projects(locator).parameters 'param-one', ->
-    expect(client).to.haveCalled 'get', '/app/rest/projects/name:project-one/parameters/param-one'
+    describe 'field', ->
+      it 'should get buildTypes field', ->
+        projects.by name: 'Project One'
+          .buildTypes.by id: 'bt9'
+          .field 'field-one', ->
+
+        expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/field-one'
+
+    describe 'builds', ->
+      it 'should get builds', ->
+        projects.by name: 'Project One'
+          .buildTypes.by id: 'bt9'
+          .builds.all ->
+
+        expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds'
+
+      it 'should get builds by locator', ->
+        projects.by name: 'Project One'
+          .buildTypes.by id: 'bt9'
+          .builds.by user: id: 1, ->
+
+        expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds/user:(id:1)'
+
+      describe 'field', ->
+        it 'should get the field', ->
+          projects.by name: 'Project One'
+            .buildTypes.by id: 'bt9'
+            .builds.by user: id: 1
+            .startDate ->
+
+          expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds/user:(id:1)/startDate'
+
+          projects.by name: 'Project One'
+            .buildTypes.by id: 'bt9'
+            .builds.by user: id: 1
+            .field 'field-one', ->
+
+          expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds/user:(id:1)/field-one'
+
+  describe 'parameters', ->
+    it 'should get parameters', ->
+      projects.by name: 'Project One'
+        .parameters.all ->
+
+      expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/parameters'
+
+    it 'should get parameters parameter', ->
+      projects.by name: 'Project One'
+        .parameters.get 'param-one', ->
+
+      expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/parameters/param-one'
+
+    it 'should set parameters parameter', ->
+      projects.by name: 'Project One'
+        .parameters.set 'param-one', 'param-one-value', ->
+
+      expect(client).to.haveCalled 'post', '/app/rest/projects/name:Project One/parameters/param-one', 'param-one-value'
+
+  describe 'templates', ->
+    it 'should get templates', ->
+      projects.by name: 'Project One'
+        .templates.all ->
+
+      expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/templates'
+
+    it 'should get templates by build locator', ->
+      projects.by name: 'Project One'
+        .templates.by id: 'bt9', ->
+
+      expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/templates/id:bt9'
