@@ -9,7 +9,7 @@ module.exports = (client) ->
       client._get '/app/rest/buildQueue', cb
 
     else if locator.compile
-      client._get '/app/rest/buildQueue', locator: locator.compile()
+      client._get '/app/rest/buildQueue', locator: locator.compile(), cb
 
     else
       id = locator
