@@ -10,7 +10,8 @@ class BuildLocator extends Locator
     'personal'
     'canceled'
     'running'
-    'pinned'
+    'pinned',
+    'branch'
   ]
 
 module.exports = BuildLocator
