@@ -1,5 +1,12 @@
 request = require 'request'
 
+Builds = require './builds/builds'
+BuildTypes = require './build-types'
+BuildQueue = require './build-queue'
+Changes = require './changes'
+Projects = require './projects/projects'
+VcsRootInstances = require './vcs-root-instances'
+
 ProjectLocator = require './locators/project-locator'
 ChangesLocator = require './locators/changes-locator'
 BuildLocator = require './locators/build-locator'
@@ -21,10 +28,10 @@ class TeamCity
 
   # API
 
-  projects: ->
+  projects:
     new Projects @
 
-  buildTypes:  ->
+  buildTypes:
     new BuildTypes @
 
   builds:

@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script/register",
+    "test:w": "npm run test -- --watch",
     "prepublish": "gulp build"
   },
   "main": "lib/teamcity",

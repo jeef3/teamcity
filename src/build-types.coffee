@@ -5,4 +5,4 @@ class BuildTypes extends Locatable
   constructor: (@client) ->
     super @client, new BuildTypeLocator
 
-
+module.exports = BuildTypes
