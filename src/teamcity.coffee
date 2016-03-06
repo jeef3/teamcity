@@ -25,26 +25,13 @@ class TeamCity
     @protocol = options.protocol || 'https'
     @baseUrl = options.baseUrl || 'localhost:8080'
 
-
-  # API
-
-  projects:
-    new Projects @
-
-  buildTypes:
-    new BuildTypes @
-
-  builds:
-    new Builds @
-
-  buildQueue:
-    new BuildQueue @
-
-  changes:
-    new Changes @
-
-  vcsRootInstances:
-    new VcsRootInstances @
+    # API
+    @builds = new Builds @
+    @buildTypes = new BuildTypes @
+    @buildQueue = new BuildQueue @
+    @changes = new Changes @
+    @projects = new Projects @
+    @vcsRootInstances = new VcsRootInstances @
 
 
   # Locators
