@@ -2,7 +2,7 @@ Locatable = require './locatable'
 BuildTypeLocator = require './locators/build-type-locator'
 
 class BuildTypes extends Locatable
-  constructor: (@client) ->
-    super @client, new BuildTypeLocator
+  @path '/app/rest/buildTypes'
+  @locator BuildTypeLocator
 
 module.exports = BuildTypes
