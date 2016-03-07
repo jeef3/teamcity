@@ -76,7 +76,7 @@ class TeamCity
       return unless cb
 
       if err
-        cb err
+        return cb err
 
       if typeof body is 'string'
         try
