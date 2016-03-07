@@ -22,7 +22,7 @@ describe 'TeamCity', ->
     expect(client.builds).to.be.a 'object'
 
   it 'should have buildQueue', ->
-    expect(client.buildQueue).to.be.a 'function'
+    expect(client.buildQueue).to.be.a 'object'
 
   it 'should have changes', ->
     expect(client.changes).to.be.a 'object'

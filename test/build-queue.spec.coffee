@@ -2,7 +2,7 @@ expect = require('chai').expect
 require './have-called'
 
 Client = require './mock/client.mock'
-BuildQueueLocator = require '../src/locators/build-queue-locator'
+BuildQueue = require '../src/build-queue'
 
 describe 'API :: Build Queue', ->
   client = null
@@ -10,24 +10,21 @@ describe 'API :: Build Queue', ->
 
   beforeEach ->
     client = new Client
-    buildQueue = require('../src/build-queue')(client)
+    buildQueue = new BuildQueue client
 
   it 'should get a queded builds info', ->
-    buildQueue 1
-    expect(client).to.haveCalled 'get', '/app/rest/buildQueue/taskId:1'
+    buildQueue.get 1, ->
+    expect(client).to.haveCalled 'get', '/app/rest/buildQueue/id:1'
 
   it 'should get all queued builds', ->
-    buildQueue ->
+    buildQueue.all ->
     expect(client).to.haveCalled 'get', '/app/rest/buildQueue'
 
   it 'should get queued builds by build queue locator', ->
-    locator = new BuildQueueLocator()
-      .buildType id: 1234
-
-    buildQueue locator
-    expect(client).to.haveCalled 'get', '/app/rest/buildQueue', locator: locator.compile()
+    buildQueue.by buildType: id: 1234, ->
+    expect(client).to.haveCalled 'get', '/app/rest/buildQueue/buildType:(id:1234)'
 
   it 'should post to the build queue', ->
     build = buildTypeId: 1
-    buildQueue().add build
+    buildQueue.trigger build
     expect(client).to.haveCalled 'post', '/app/rest/buildQueue', build

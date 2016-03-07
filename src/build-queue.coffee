@@ -1,18 +1,11 @@
-module.exports = (client) ->
-  buildQueue = (locator, cb) ->
-    if !locator and !cb
-      return add:  (build, cb) ->
-        client._post '/app/rest/buildQueue', build, cb
+Locatable = require './locatable'
+BuildQueueLocator = require './locators/build-queue-locator'
 
-    if typeof locator is 'function'
-      cb = locator
-      client._get '/app/rest/buildQueue', cb
+class BuildQueue extends Locatable
+  @path '/app/rest/buildQueue'
+  @locator BuildQueueLocator
 
-    else if locator.compile
-      client._get '/app/rest/buildQueue', locator: locator.compile(), cb
+  trigger: (build, cb) ->
+    @client._post @getPath(), build, cb
 
-    else
-      id = locator
-      client._get "/app/rest/buildQueue/taskId:#{id}", cb
-
-  buildQueue
+module.exports = BuildQueue
