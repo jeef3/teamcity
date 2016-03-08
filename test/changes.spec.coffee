@@ -3,6 +3,7 @@ require './have-called'
 
 Client = require './mock/client.mock'
 Changes = require '../src/changes'
+BuildLocator = require '../src/locators/build-locator'
 
 describe 'API :: Changes', ->
   client = null
@@ -21,5 +22,8 @@ describe 'API :: Changes', ->
     expect(client).to.haveCalled 'get', '/app/rest/changes'
 
   it 'should get changes by change locator', ->
-    changes.by buildType: id: 'bt9', ->
-    expect(client).to.haveCalled 'get', '/app/rest/changes/buildType:(id:bt9)'
+    locator = new BuildLocator()
+    locator.buildType id: 'bt9'
+
+    changes.by locator, ->
+    expect(client).to.haveCalled 'get', '/app/rest/changes?locator=buildType:(id:bt9)'

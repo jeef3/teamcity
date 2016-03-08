@@ -7,9 +7,15 @@ class Locatable
 
   constructor: (@client, @parent) ->
 
-  get: (id, cb) ->
-    @locator = new @constructor._locator
-    @locator.id id
+  get: (locator, cb) ->
+    if typeof locator is 'number' or typeof locator is 'string'
+      @locator = new @constructor._locator
+      @locator.id locator
+    else if locator.compile
+      @locator = locator
+    else
+      @locator = new @constructor._locator
+      @locator.locators = locator
 
     if cb then @client._get @getPath(), cb
     this
@@ -26,18 +32,22 @@ class Locatable
       @locator = new @constructor._locator
       @locator.locators = locator
 
-    if cb then @client._get @getPath(), cb
+    if cb then @client._get @getPath(null, true), cb
 
     this
 
-  getPath: (child) ->
+  getPath: (child, list) ->
     parts = []
 
     if @parent then parts.push @parent.getPath()
 
     parts.push @constructor._path
 
-    if @locator then parts.push "/#{@locator.compile()}"
+    if list
+      if @locator then parts.push "?locator=#{@locator.compile()}"
+    else
+      if @locator then parts.push "/#{@locator.compile()}"
+
     if child then parts.push "/#{child}"
 
     parts.join ''

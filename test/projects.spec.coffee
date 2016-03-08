@@ -31,25 +31,25 @@ describe 'API :: Projects', ->
 
   it 'should get projects by project locator', ->
     projects.by name: 'Project One', ->
-    expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One'
+    expect(client).to.haveCalled 'get', '/app/rest/projects?locator=name:Project One'
 
   describe 'field', ->
     it 'should get project fields', ->
-      projects.by name: 'Project One'
+      projects.get name: 'Project One'
         .field 'field-one', ->
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/field-one'
 
   describe 'buildTypes', ->
     it 'should get build types', ->
-      projects.by name: 'Project One'
+      projects.get name: 'Project One'
         .buildTypes.all ->
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes'
 
     it 'should get build types by locator', ->
-      projects.by name: 'Project One'
-        .buildTypes.by id: 'bt9', ->
+      projects.get name: 'Project One'
+        .buildTypes.get id: 'bt9', ->
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9'
 
@@ -70,56 +70,56 @@ describe 'API :: Projects', ->
         expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds'
 
       it 'should get builds by locator', ->
-        projects.by name: 'Project One'
-          .buildTypes.by id: 'bt9'
+        projects.get name: 'Project One'
+          .buildTypes.get id: 'bt9'
           .builds.by user: id: 1, ->
 
-        expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds/user:(id:1)'
+        expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds?locator=user:(id:1)'
 
       describe 'field', ->
         it 'should get the field', ->
-          projects.by name: 'Project One'
-            .buildTypes.by id: 'bt9'
-            .builds.by user: id: 1
+          projects.get name: 'Project One'
+            .buildTypes.get id: 'bt9'
+            .builds.get user: id: 1
             .startDate ->
 
           expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds/user:(id:1)/startDate'
 
-          projects.by name: 'Project One'
-            .buildTypes.by id: 'bt9'
-            .builds.by user: id: 1
+          projects.get name: 'Project One'
+            .buildTypes.get id: 'bt9'
+            .builds.get user: id: 1
             .field 'field-one', ->
 
           expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/buildTypes/id:bt9/builds/user:(id:1)/field-one'
 
   describe 'parameters', ->
     it 'should get parameters', ->
-      projects.by name: 'Project One'
+      projects.get name: 'Project One'
         .parameters.all ->
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/parameters'
 
     it 'should get parameters parameter', ->
-      projects.by name: 'Project One'
+      projects.get name: 'Project One'
         .parameters.get 'param-one', ->
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/parameters/param-one'
 
     it 'should set parameters parameter', ->
-      projects.by name: 'Project One'
+      projects.get name: 'Project One'
         .parameters.set 'param-one', 'param-one-value', ->
 
       expect(client).to.haveCalled 'post', '/app/rest/projects/name:Project One/parameters/param-one', 'param-one-value'
 
   describe 'templates', ->
     it 'should get templates', ->
-      projects.by name: 'Project One'
+      projects.get name: 'Project One'
         .templates.all ->
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/templates'
 
     it 'should get templates by build locator', ->
-      projects.by name: 'Project One'
-        .templates.by id: 'bt9', ->
+      projects.get name: 'Project One'
+        .templates.get id: 'bt9', ->
 
       expect(client).to.haveCalled 'get', '/app/rest/projects/name:Project One/templates/id:bt9'

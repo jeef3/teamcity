@@ -23,6 +23,6 @@ describe 'API :: Build Types', ->
 
   it 'should get build types by build type locator', ->
     buildTypes.by affectedProject: id: 1234, ->
-    expect(client).to.haveCalled 'get', '/app/rest/buildTypes/affectedProject:(id:1234)'
+    expect(client).to.haveCalled 'get', '/app/rest/buildTypes?locator=affectedProject:(id:1234)'
 
 

@@ -26,7 +26,7 @@ describe 'API :: Builds', ->
 
   it 'should get builds by build locator', ->
     builds.by buildType: id: 'bt9', ->
-    expect(client).to.haveCalled 'get', '/app/rest/builds/buildType:(id:bt9)'
+    expect(client).to.haveCalled 'get', '/app/rest/builds?locator=buildType:(id:bt9)'
 
   it 'should get the build log', ->
     expect(->
@@ -38,18 +38,18 @@ describe 'API :: Builds', ->
     expect(client).to.haveCalled 'get', '/downloadBuildLog.html', buildId: 1234
 
   it 'should get build statistics', ->
-    builds.by buildType: id: 'bt9'
+    builds.get buildType: id: 'bt9'
       .statistics.all ->
 
     expect(client).to.haveCalled 'get', '/app/rest/builds/buildType:(id:bt9)/statistics'
 
   it 'should get a build statistic', ->
-    builds.by buildType: id: 'bt9'
+    builds.get buildType: id: 'bt9'
       .statistics.get 'BuildDuration', ->
 
     expect(client).to.haveCalled 'get', '/app/rest/builds/buildType:(id:bt9)/statistics/BuildDuration'
 
-    builds.by buildType: id: 'bt9'
+    builds.get buildType: id: 'bt9'
       .statistics.BuildDuration ->
 
     expect(client).to.haveCalled 'get', '/app/rest/builds/buildType:(id:bt9)/statistics/BuildDuration'

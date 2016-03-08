@@ -22,7 +22,7 @@ describe 'API :: Build Queue', ->
 
   it 'should get queued builds by build queue locator', ->
     buildQueue.by buildType: id: 1234, ->
-    expect(client).to.haveCalled 'get', '/app/rest/buildQueue/buildType:(id:1234)'
+    expect(client).to.haveCalled 'get', '/app/rest/buildQueue?locator=buildType:(id:1234)'
 
   it 'should post to the build queue', ->
     build = buildTypeId: 1
