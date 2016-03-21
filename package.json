@@ -11,7 +11,7 @@
     "build": "tsc",
     "build:w": "tsc --watch --pretty",
     "test": "tsc && ava",
-    "test:w": "ava --watch",
+    "test:w": "ava --watch --color",
     "dev": "concurrently \"npm run build:w\" \"npm run test:w\"",
     "prepublish": "gulp build"
   },

@@ -13,10 +13,12 @@ export default class TeamCity {
   private auth: Options
   private client: ClientInterface
 
+  projects: Projects
+
   constructor(config?: Options, client?: ClientInterface) {
     this.auth = config;
     this.client = client;
-  }
 
-  projects = new Projects(this.client);
+    this.projects = new Projects(this.client);
+  }
 }
