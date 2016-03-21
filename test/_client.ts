@@ -3,7 +3,7 @@ import { ClientInterface } from '../src/client';
 interface ApiCall {
   verb: string
   path: string
-  data: any
+  data?: any
 }
 
 export default class Client implements ClientInterface {
@@ -16,8 +16,11 @@ export default class Client implements ClientInterface {
   _get(path, params, cb) {
     this._lastCalled = {
       verb: 'get',
-      path: path,
-      data: params
+      path: path
+    };
+
+    if (typeof params !== 'function') {
+      this._lastCalled.data = params;
     }
   }
 

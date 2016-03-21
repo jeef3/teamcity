@@ -8,6 +8,7 @@ test('Projects', t => {
   const teamcity = new TeamCity({}, client);
 
   teamcity.projects.get('Project One', () => {});
+
   t.same(
     client.lastCalled(),
     {
