@@ -8,8 +8,11 @@
     "Jeff Knaggs <mail@jeef3.com>"
   ],
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script/register",
-    "test:w": "npm run test -- --watch",
+    "build": "tsc",
+    "build:w": "tsc --watch --pretty",
+    "test": "tsc && ava",
+    "test:w": "ava --watch",
+    "dev": "concurrently \"npm run build:w\" \"npm run test:w\"",
     "prepublish": "gulp build"
   },
   "main": "lib/teamcity",
@@ -17,17 +20,24 @@
     "teamcity",
     "api"
   ],
+  "ava": {
+    "files": "lib/test"
+  },
   "dependencies": {
     "request": "^2.34.0"
   },
   "devDependencies": {
+    "ava": "^0.13.0",
     "chai": "^1.9.1",
     "coffee-script": "^1.7.1",
+    "concurrently": "^2.0.0",
+    "eslint": "^2.4.0",
     "gulp": "^3.9.1",
     "gulp-coffee": "^2.1.1",
     "gulp-load-plugins": "^0.5.3",
     "gulp-mocha": "^0.5.1",
     "mocha": "^1.20.1",
-    "rimraf": "^2.2.8"
+    "rimraf": "^2.2.8",
+    "typescript": "^1.8.9"
   }
 }
