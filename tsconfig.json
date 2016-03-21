@@ -6,5 +6,5 @@
     "module": "commonjs",
     "target": "es2015"
   },
-  "files": [ "src/index.ts", "test/index.ts" ]
+  "include": [ "src", "test" ]
 }
