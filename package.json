@@ -12,7 +12,8 @@
     "build:w": "tsc --watch --pretty",
     "test": "tsc && ava",
     "test:w": "ava --watch --color",
-    "dev": "concurrently \"npm run build:w\" \"npm run test:w\"",
+    "clean": "rimraf lib",
+    "dev": "npm run clean && concurrently \"npm run build:w\" \"npm run test:w\"",
     "prepublish": "gulp build"
   },
   "main": "lib/teamcity",
@@ -37,7 +38,7 @@
     "gulp-load-plugins": "^0.5.3",
     "gulp-mocha": "^0.5.1",
     "mocha": "^1.20.1",
-    "rimraf": "^2.2.8",
+    "rimraf": "^2.5.2",
     "typescript": "^1.8.9"
   }
 }

@@ -2,7 +2,8 @@ import test from 'ava';
 
 import MockClient, { IApiCall } from './_client';
 import TeamCity from '../src/index';
-import { ProjectLocatorBuilder, IProjectLocator } from '../src/locators/project-locator';
+import ProjectLocator, { IProjectLocator } from '../src/locators/project-locator';
+import BuildTypeLocator from '../src/locators/build-type-locator';
 
 test('get (string)', t => {
   const client = new MockClient();
@@ -24,7 +25,7 @@ test('get (locator)', t => {
 
   const locator = <IProjectLocator>{ name: 'Project Three' };
 
-  teamcity.projects.get(locator, () => {});
+  teamcity.projects.get(locator);
   t.same(
     client.lastCalled(),
     <IApiCall>{
@@ -32,6 +33,23 @@ test('get (locator)', t => {
       path: '/app/rest/projects/name:Project Three'
     },
     'should get a project');
+});
+
+test('list', t => {
+  const client = new MockClient();
+  const teamcity = new TeamCity({}, client);
+
+  const locator = <IProjectLocator>{ name: 'Project Three' };
+
+  teamcity.projects.list(locator);
+  t.same(
+    client.lastCalled(),
+    <IApiCall>{
+      verb: 'get',
+      path: '/app/rest/projects?locator=name:Project Three'
+    },
+    'should list projects matching locator'
+  );
 });
 
 test('all', t => {
@@ -69,15 +87,21 @@ test('buildTypes', t => {
   const client = new MockClient();
   const teamcity = new TeamCity({}, client);
 
-  teamcity.projects
-    .by({ name: 'Project Five' })
-    .buildTypes.all();
+  const projectLocator = new ProjectLocator()
+    .name('Project Five')
+
+  const buildTypeLocator = new BuildTypeLocator()
+    .name('bt1');
+
+  teamcity
+    .projects.by(projectLocator)
+    .buildTypes.list(buildTypeLocator);
 
   t.same(
     client.lastCalled(),
     <IApiCall>{
       verb: 'get',
-      path: '/app/rest/projects/name:Project Five/buildTypes'
+      path: '/app/rest/projects/name:Project Five/buildTypes?locator=name:bt1'
     }
   )
 })

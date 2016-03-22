@@ -15,19 +15,11 @@ export function compileLocator(locator: ILocator) {
     .join('');
 }
 
-export class LocatorBuilder<T extends ILocator> {
-  protected store : T
+export default class Locator<T extends ILocator> {
+  store : T = <T>{};
 
-  constructor() {
-    this.store = <T>{};
-  }
-
-  id(id: number|string) : this {
+  id(id: string) : this {
     this.store.id = id;
     return this;
-  }
-
-  build() : T {
-    return this.store;
   }
 }

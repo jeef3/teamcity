@@ -1,5 +1,5 @@
 import { IClientApi } from './client';
-import { ILocator, compileLocator } from './locator';
+import Locator, { ILocator, compileLocator } from './locator';
 
 export default class Locatable<T extends ILocator> {
 
@@ -18,21 +18,39 @@ export default class Locatable<T extends ILocator> {
     this._locator = <T>{};
   }
 
-  get(locator: number|string|T, cb?: () => void) {
+  /*
+   * Get one item
+   */
+  get(locator: number|string|T|Locator<any>, cb?: () => void) {
     this._setLocator(locator);
 
     return this.client._get(this.getPath(), cb);
   }
 
-  by(locator: number|string|T) : this {
+  /**
+   * List items (by locator)
+   */
+  list(locator: number|string|T|Locator<any>, cb?: () => void) {
+    this._setLocator(locator);
+
+    return this.client._get(this.getPath(null, true), cb);
+  }
+
+  /*
+   * Get all items (resets the current locator)
+   */
+  all(cb?: () => void) {
+    this._locator = <T>{};
+    return this.client._get(this.getPath(), cb);
+  }
+
+  /*
+   * Set the current locator
+   */
+  by(locator: number|string|T|Locator<any>) : this {
     this._setLocator(locator);
 
     return this;
-  }
-
-  all(cb) {
-    this._locator = <T>{};
-    return this.client._get(this.getPath(), cb);
   }
 
   protected getPath(child?, list?) : string {
@@ -63,8 +81,10 @@ export default class Locatable<T extends ILocator> {
     return parts.join('');
   }
 
-  private _setLocator(locator: number|string|T) {
-    if (typeof locator === 'number' || typeof locator === 'string') {
+  private _setLocator(locator: number|string|T|Locator<any>) {
+    if (locator instanceof Locator) {
+      this._locator = locator.store;
+    } else if (typeof locator === 'number' || typeof locator === 'string') {
       this._locator.id = locator;
     } else if (typeof locator === 'object') {
       this._locator = locator;
