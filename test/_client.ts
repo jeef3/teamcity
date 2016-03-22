@@ -7,7 +7,7 @@ export interface IApiCall {
 }
 
 export default class MockClient implements IClientApi {
-  _lastCalled: IApiCall
+  private _lastCalled: IApiCall
 
   lastCalled() : IApiCall {
     return this._lastCalled;
@@ -19,7 +19,7 @@ export default class MockClient implements IClientApi {
       path: path
     };
 
-    if (typeof params !== 'function') {
+    if (params && typeof params !== 'function') {
       this._lastCalled.data = params;
     }
   }

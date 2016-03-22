@@ -5,27 +5,33 @@ export default class Locatable<T extends ILocator> {
 
   protected client: IClientApi
 
+  private _parent: Locatable<any>
   private _path: string
 
   private _locator: T
-  private _parent: Locatable<any>
 
-  constructor(client: IClientApi, path: string) {
+  constructor(client: IClientApi, parent: Locatable<any>, path: string) {
     this.client = client
+    this._parent = parent;
     this._path = path;
 
     this._locator = <T>{};
   }
 
   get(locator: number|string|T, cb?: () => void) {
-    if (typeof locator === 'number' || typeof locator === 'string') {
-      this._locator.id = locator;
-    } else if (typeof locator === 'object') {
-      this._locator = locator;
-    }
+    this._setLocator(locator);
 
-    console.log('get', this._locator)
+    return this.client._get(this.getPath(), cb);
+  }
 
+  by(locator: number|string|T) : this {
+    this._setLocator(locator);
+
+    return this;
+  }
+
+  all(cb) {
+    this._locator = <T>{};
     return this.client._get(this.getPath(), cb);
   }
 
@@ -40,10 +46,13 @@ export default class Locatable<T extends ILocator> {
 
     if (this._locator) {
       let compiled = compileLocator(this._locator);
-      if (list) {
-        parts.push(`?locator=${compiled}`);
-      } else {
-        parts.push(`/${compiled}`);
+
+      if (compiled) {
+        if (list) {
+          parts.push(`?locator=${compiled}`);
+        } else {
+          parts.push(`/${compiled}`);
+        }
       }
     }
 
@@ -52,5 +61,13 @@ export default class Locatable<T extends ILocator> {
     }
 
     return parts.join('');
+  }
+
+  private _setLocator(locator: number|string|T) {
+    if (typeof locator === 'number' || typeof locator === 'string') {
+      this._locator.id = locator;
+    } else if (typeof locator === 'object') {
+      this._locator = locator;
+    }
   }
 }

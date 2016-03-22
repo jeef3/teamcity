@@ -1,11 +1,16 @@
 import { IClientApi } from '../client';
 import Locatable from '../locatable';
 import { IProjectLocator } from '../locators/project-locator';
+import BuildTypes from '../build-types';
 
 export default class Projects extends Locatable<IProjectLocator> {
 
-  constructor(client: IClientApi) {
-    super(client, '/app/rest/projects');
+  buildTypes: BuildTypes
+
+  constructor(client: IClientApi, parent?: Locatable, path?: string) {
+    super(client, parent, path || '/app/rest/projects');
+
+    this.buildTypes = new BuildTypes(this.client, this, '/buildTypes');
   }
 
   parameters = {}

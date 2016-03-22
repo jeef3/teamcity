@@ -4,7 +4,7 @@ import MockClient, { IApiCall } from './_client';
 import TeamCity from '../src/index';
 import { ProjectLocatorBuilder, IProjectLocator } from '../src/locators/project-locator';
 
-test('Projects :: get', t => {
+test('get (string)', t => {
   const client = new MockClient();
   const teamcity = new TeamCity({}, client);
 
@@ -18,25 +18,7 @@ test('Projects :: get', t => {
     'should get a project');
 });
 
-test('Projects :: get (locator)', t => {
-  const client = new MockClient();
-  const teamcity = new TeamCity({}, client);
-
-  const locator = new ProjectLocatorBuilder()
-    .name('Project Two')
-    .build();
-
-  teamcity.projects.get(locator, () => {});
-  t.same(
-    client.lastCalled(),
-    <IApiCall>{
-      verb: 'get',
-      path: '/app/rest/projects/name:Project Two'
-    },
-    'should get a project');
-});
-
-test('Projects :: get (object)', t => {
+test('get (locator)', t => {
   const client = new MockClient();
   const teamcity = new TeamCity({}, client);
 
@@ -51,3 +33,51 @@ test('Projects :: get (object)', t => {
     },
     'should get a project');
 });
+
+test('all', t => {
+  const client = new MockClient();
+  const teamcity = new TeamCity({}, client);
+
+  teamcity.projects.all();
+  t.same(
+    client.lastCalled(),
+    <IApiCall>{
+      verb: 'get',
+      path: '/app/rest/projects'
+    }
+  );
+});
+
+test('field', t => {
+  const client = new MockClient();
+  const teamcity = new TeamCity({}, client);
+
+  teamcity.projects
+    .by({ name: 'Project Four' })
+    .field('field-one');
+
+  t.same(
+    client.lastCalled(),
+    <IApiCall>{
+      verb: 'get',
+      path: '/app/rest/projects/name:Project Four/field-one'
+    }
+  );
+});
+
+test('buildTypes', t => {
+  const client = new MockClient();
+  const teamcity = new TeamCity({}, client);
+
+  teamcity.projects
+    .by({ name: 'Project Five' })
+    .buildTypes.all();
+
+  t.same(
+    client.lastCalled(),
+    <IApiCall>{
+      verb: 'get',
+      path: '/app/rest/projects/name:Project Five/buildTypes'
+    }
+  )
+})
