@@ -1,12 +1,12 @@
-import Locator, { LocatorBaseStore } from '../locator';
+import { LocatorBuilder, ILocator } from '../locator';
 
-interface ProjectLocatorStore extends LocatorBaseStore {
+export interface IProjectLocator extends ILocator {
   name?: string
 }
 
-export default class ProjectLocator extends Locator<ProjectLocatorStore> {
+export class ProjectLocatorBuilder extends LocatorBuilder<IProjectLocator> {
   name(name: string) : this {
-    this.locators.name = name;
+    this.store.name = name;
     return this;
   }
 }

@@ -1,48 +1,49 @@
-import { ClientInterface } from './client';
-import { LocatorInterface } from './locator';
+import { IClientApi } from './client';
+import { ILocator, compileLocator } from './locator';
 
-export default class Locatable<T extends LocatorInterface> {
+export default class Locatable<T extends ILocator> {
 
-  // parent: Locatable
+  protected client: IClientApi
 
-  private _client: ClientInterface
   private _path: string
-  private _defaultLocator: T
 
   private _locator: T
+  private _parent: Locatable<any>
 
-  constructor(
-      client: ClientInterface,
-      path: string,
-      defaultLocator: { new(): T; }) {
-    this._client = client
+  constructor(client: IClientApi, path: string) {
+    this.client = client
     this._path = path;
 
-    this._defaultLocator = new defaultLocator();
+    this._locator = <T>{};
   }
 
   get(locator: number|string|T, cb?: () => void) {
-    if (typeof locator === 'string') {
-      this._locator = this._defaultLocator;
-      this._locator.id(locator);
+    if (typeof locator === 'number' || typeof locator === 'string') {
+      this._locator.id = locator;
+    } else if (typeof locator === 'object') {
+      this._locator = locator;
     }
-    return this._client._get(this._getPath(), cb);
+
+    console.log('get', this._locator)
+
+    return this.client._get(this.getPath(), cb);
   }
 
-  protected _getPath(child?, list?) : string {
+  protected getPath(child?, list?) : string {
     const parts = [];
 
-    if (this.parent) {
-      parts.push(this.parent.getPath());
+    if (this._parent) {
+      parts.push(this._parent.getPath());
     }
 
     parts.push(this._path);
 
     if (this._locator) {
+      let compiled = compileLocator(this._locator);
       if (list) {
-        parts.push(`?locator=${this._locator.compile()}`);
+        parts.push(`?locator=${compiled}`);
       } else {
-        parts.push(`/${this._locator.compile()}`);
+        parts.push(`/${compiled}`);
       }
     }
 

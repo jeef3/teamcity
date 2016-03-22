@@ -1,4 +1,4 @@
-import { ClientInterface } from './client';
+import { IClientApi } from './client';
 import Projects from './projects';
 
 interface Options {
@@ -11,11 +11,11 @@ interface Options {
 
 export default class TeamCity {
   private auth: Options
-  private client: ClientInterface
+  private client: IClientApi
 
   projects: Projects
 
-  constructor(config?: Options, client?: ClientInterface) {
+  constructor(config?: Options, client?: IClientApi) {
     this.auth = config;
     this.client = client;
 

@@ -1,15 +1,15 @@
-import { ClientInterface } from '../src/client';
+import { IClientApi } from '../src/client';
 
-interface ApiCall {
+export interface IApiCall {
   verb: string
   path: string
   data?: any
 }
 
-export default class Client implements ClientInterface {
-  _lastCalled: ApiCall
+export default class MockClient implements IClientApi {
+  _lastCalled: IApiCall
 
-  lastCalled() : ApiCall {
+  lastCalled() : IApiCall {
     return this._lastCalled;
   }
 
