@@ -13,22 +13,52 @@ export default class MockClient implements IClientApi {
     return this._lastCalled;
   }
 
-  _get(path, params, cb) {
+  _get(path: string, params?: any, cb?: (result: any) => void): Promise<any> {
+    if (typeof params === 'function') {
+      cb = params;
+      params = null;
+    }
+
     this._lastCalled = {
       verb: 'get',
       path: path
     };
 
-    if (params && typeof params !== 'function') {
+    if (params) {
       this._lastCalled.data = params;
     }
+
+    const result = { status: 'success' };
+
+    if (cb) { cb(result); }
+
+    return new Promise((resolve, reject) => {
+      resolve(result);
+    });
   }
 
-  _post(path, params, cb) {
+  _post(path: string, params?: any, cb?: (result: any) => void): Promise<any> {
+    if (typeof params === 'function') {
+      cb = params;
+      params = null;
+    }
+
     this._lastCalled = {
       verb: 'get',
       path: path,
       data: params
     }
+
+    if (params) {
+      this._lastCalled.data = params;
+    }
+
+    const result = { status: 'success' };
+
+    if (cb) { cb(result); }
+
+    return new Promise((resolve, reject) => {
+      resolve(result);
+    });
   }
 }

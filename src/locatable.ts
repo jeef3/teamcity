@@ -10,7 +10,7 @@ export default class Locatable<T extends ILocator> {
 
   private _locator: T
 
-  constructor(client: IClientApi, parent: Locatable<any>, path: string) {
+  constructor(client: IClientApi, parent?: Locatable<any>, path?: string) {
     this.client = client
     this._parent = parent;
     this._path = path;
@@ -21,7 +21,7 @@ export default class Locatable<T extends ILocator> {
   /*
    * Get one item
    */
-  get(locator: number|string|T|Locator<any>, cb?: () => void) {
+  get(locator: number|string|T|Locator<any>, cb?: (r:any) => void): Promise<any> {
     this._setLocator(locator);
 
     return this.client._get(this.getPath(), cb);

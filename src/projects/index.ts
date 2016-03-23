@@ -15,14 +15,14 @@ export default class Projects extends Locatable<IProjectLocator> {
 
   parameters = {}
 
-  create(project: any, cb?: () => void) {
+  create(project: any, cb?: (result: any) => void) {
     return this.client._post(this.getPath(), project, cb);
   }
 
   // TODO: Not sure about this
-  destroy(cb) {}
+  destroy(cb?: (result: any) => void) {}
 
-  field(field: any, cb?: () => void) {
+  field(field: any, cb?: (result: any) => void) {
     return this.client._get(this.getPath(field), cb);
   }
 }
