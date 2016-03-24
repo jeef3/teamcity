@@ -14,7 +14,7 @@
     "test:w": "ava --watch --color",
     "clean": "rimraf lib",
     "dev": "npm run clean && concurrently \"npm run build:w\" \"npm run test:w\"",
-    "prepublish": "gulp build"
+    "prepublish": "npm run build"
   },
   "main": "lib/teamcity",
   "keywords": [
