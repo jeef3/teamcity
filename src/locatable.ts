@@ -19,7 +19,7 @@ export default class Locatable<T extends ILocator> {
   }
 
   /*
-   * Get one item
+   * Get one item, always takes a locator.
    */
   get(locator: number|string|T|Locator<any>, cb?: (r:any) => void): Promise<any> {
     this._setLocator(locator);
@@ -28,10 +28,17 @@ export default class Locatable<T extends ILocator> {
   }
 
   /**
-   * List items (by locator)
+   * List items by given or previously set locator
    */
-  list(locator: number|string|T|Locator<any>, cb?: () => void) {
-    this._setLocator(locator);
+  list(locator?: any, cb?: (r: any[]) => void): Promise<any> {
+    if (typeof locator === 'function') {
+      cb = locator;
+      locator = null;
+    }
+
+    if (locator) {
+      this._setLocator(locator);
+    }
 
     return this.client._get(this.getPath(null, true), cb);
   }
