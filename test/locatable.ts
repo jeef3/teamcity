@@ -120,7 +120,10 @@ test('list(object): Promise', async (t) => {
   const client = new MockClient();
   const locatable = new TestLocatable(client, null, '/test-locatable');
 
-  const locator = <ITestLocator>{ stringDim: 'some-value' };
+  const locator = <ITestLocator>{
+    stringDim: 'some-value',
+    numberDim: 4
+  };
 
   const result = await locatable.list(locator);
   t.is(result.status, 'success', 'should receive result');
@@ -128,7 +131,7 @@ test('list(object): Promise', async (t) => {
     client.lastCalled(),
     <IApiCall>{
       verb: 'get',
-      path: '/test-locatable?locator=stringDim:some-value'
+      path: '/test-locatable?locator=stringDim:some-value,numberDim:4'
     },
     'should list by object locator');
 });
@@ -137,7 +140,10 @@ test.cb('list(object, cb)', t => {
   const client = new MockClient();
   const locatable = new TestLocatable(client, null, '/test-locatable');
 
-  const locator = <ITestLocator>{ stringDim: 'some-value' };
+  const locator = <ITestLocator>{
+    stringDim: 'some-value',
+    numberDim: 4
+  };
 
   locatable.list(locator, (r: any) => {
     t.is(r.status, 'success', 'should receive result');
@@ -145,7 +151,7 @@ test.cb('list(object, cb)', t => {
       client.lastCalled(),
       <IApiCall>{
         verb: 'get',
-        path: '/test-locatable?locator=stringDim:some-value'
+        path: '/test-locatable?locator=stringDim:some-value,numberDim:4'
       },
       'should list by object locator');
 
@@ -158,7 +164,8 @@ test('list(locator): Promise', async (t) => {
   const locatable = new TestLocatable(client, null, '/test-locatable');
 
   const locator = new TestLocator()
-    .stringDim('another-value');
+    .stringDim('another-value')
+    .numberDim(4);
 
   const result = await locatable.list(locator);
   t.is(result.status, 'success', 'should receive result');
@@ -166,7 +173,7 @@ test('list(locator): Promise', async (t) => {
     client.lastCalled(),
     <IApiCall>{
       verb: 'get',
-      path: '/test-locatable?locator=stringDim:another-value'
+      path: '/test-locatable?locator=stringDim:another-value,numberDim:4'
     },
     'should list by object locator');
 });
@@ -176,7 +183,8 @@ test.cb('list(locator, cb)', t => {
   const locatable = new TestLocatable(client, null, '/test-locatable');
 
   const locator = new TestLocator()
-    .stringDim('another-value');
+    .stringDim('another-value')
+    .numberDim(4);
 
   locatable.list(locator, (r: any) => {
     t.is(r.status, 'success', 'should receive result');
@@ -184,7 +192,7 @@ test.cb('list(locator, cb)', t => {
       client.lastCalled(),
       <IApiCall>{
         verb: 'get',
-        path: '/test-locatable?locator=stringDim:another-value'
+        path: '/test-locatable?locator=stringDim:another-value,numberDim:4'
       },
       'should list by object locator');
 
@@ -197,7 +205,8 @@ test('by(locator).list(): Promise', async (t) => {
   const locatable = new TestLocatable(client, null, '/test-locatable');
 
   const locator = new TestLocator()
-    .stringDim('another-value');
+    .stringDim('another-value')
+    .numberDim(4)
 
   const result = await locatable.by(locator).list();
   t.is(result.status, 'success', 'should receive result');
@@ -205,7 +214,7 @@ test('by(locator).list(): Promise', async (t) => {
     client.lastCalled(),
     <IApiCall>{
       verb: 'get',
-      path: '/test-locatable?locator=stringDim:another-value'
+      path: '/test-locatable?locator=stringDim:another-value,numberDim:4'
     },
     'should list by object locator');
 });
@@ -215,7 +224,8 @@ test.cb('.by(locator).list(cb)', t => {
   const locatable = new TestLocatable(client, null, '/test-locatable');
 
   const locator = new TestLocator()
-    .stringDim('another-value');
+    .stringDim('another-value')
+    .numberDim(4);
 
   locatable.by(locator).list((r: any) => {
     t.is(r.status, 'success', 'should receive result');
@@ -223,7 +233,7 @@ test.cb('.by(locator).list(cb)', t => {
       client.lastCalled(),
       <IApiCall>{
         verb: 'get',
-        path: '/test-locatable?locator=stringDim:another-value'
+        path: '/test-locatable?locator=stringDim:another-value,numberDim:4'
       },
       'should list by object locator');
 

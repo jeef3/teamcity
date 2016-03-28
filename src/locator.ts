@@ -10,7 +10,7 @@ export function compileLocator(locator: ILocator) {
         return `${l}:${locator[l]}`
       }
     })
-    .join('');
+    .join(',');
 }
 
 export default class Locator<T extends ILocator> {
@@ -18,6 +18,7 @@ export default class Locator<T extends ILocator> {
   id: (id: number|string) => this;
 
   constructor(dimensions?: string[]) {
+    dimensions = dimensions || [];
     dimensions.push('id');
 
     dimensions.forEach(d => {
