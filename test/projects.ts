@@ -1,29 +1,10 @@
 import test from 'ava';
 
-import MockClient, { IApiCall } from './_client';
-import TeamCity from '../src/index';
-import ProjectLocator, { IProjectLocator } from '../src/locators/project-locator';
-import BuildTypeLocator from '../src/locators/build-type-locator';
+import Projects from '../src/projects';
 
-test('buildTypes', t => {
-  const client = new MockClient();
-  const teamcity = new TeamCity({}, client);
+test('dimensions', t => {
+  const projects = new Projects(null);
 
-  const projectLocator = new ProjectLocator()
-    .name('Project Five')
-
-  const buildTypeLocator = new BuildTypeLocator()
-    .name('bt1');
-
-  teamcity
-    .projects.by(projectLocator)
-    .buildTypes.list(buildTypeLocator);
-
-  t.same(
-    client.lastCalled(),
-    <IApiCall>{
-      verb: 'get',
-      path: '/app/rest/projects/name:Project Five/buildTypes?locator=name:bt1'
-    }
-  )
-})
+  t.ok(projects.buildTypes, 'should have buildTypes');
+  t.ok(projects.templates, 'should have templates');
+});
