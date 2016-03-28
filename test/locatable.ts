@@ -2,6 +2,7 @@ import test from 'ava';
 
 import MockClient, { IApiCall } from './_client';
 import TestLocatable, { ITestLocator, TestLocator } from './_locatable';
+import ProjectLocator from '../src/locators/project-locator';
 
 // == get()
 

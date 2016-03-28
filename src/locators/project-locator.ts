@@ -7,6 +7,8 @@ export interface IProjectLocator extends ILocator {
 export default class ProjectLocator extends Locator<IProjectLocator> {
   name: (name: string) => this;
 
+  // TODO: Disallow use of id AND name
+
   constructor() {
     super([ 'name' ]);
   }

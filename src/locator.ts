@@ -28,4 +28,8 @@ export default class Locator<T extends ILocator> {
       }
     });
   }
+
+  fields(fields: string[]): this {
+    return this;
+  }
 }
