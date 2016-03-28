@@ -9,19 +9,13 @@ export interface ITestLocator extends ILocator {
 }
 
 export class TestLocator extends Locator<ITestLocator> {
-  booleanDim(booleanDim: boolean) : this {
-    this.store.booleanDim = booleanDim;
-    return this;
-  }
 
-  numberDim(numberDim: number) : this {
-    this.store.numberDim = numberDim;
-    return this;
-  }
+  booleanDim: (booleanDim: boolean) => this;
+  numberDim: (numberDim: number) => this;
+  stringDim: (stringDim: string) => this;
 
-  stringDim(stringDim: string) : this {
-    this.store.stringDim = stringDim;
-    return this;
+  constructor() {
+    super(['booleanDim', 'numberDim', 'stringDim']);
   }
 }
 

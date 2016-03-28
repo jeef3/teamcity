@@ -5,8 +5,9 @@ export interface IProjectLocator extends ILocator {
 }
 
 export default class ProjectLocator extends Locator<IProjectLocator> {
-  name(name: string) : this {
-    this.store.name = name;
-    return this;
+  name: (name: string) => this;
+
+  constructor() {
+    super([ 'name' ]);
   }
 }

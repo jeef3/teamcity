@@ -11,18 +11,23 @@ export interface IBuildTypeLocator extends ILocator {
 }
 
 export default class BuildTypeLocator extends Locator<IBuildTypeLocator> {
-  name(name: string) : this {
-    this.store.name = name;
-    return this;
-  }
+  name: (name: string) => this;
+  internalId: (string) => this;
+  project: (string) => this;
+  affectedProject: (string) => this;
+  template: (string) => this;
+  templateFlag: (string) => this;
+  paused: (boolean) => this;
 
-  internalId(internalId: string) : this {
-    this.store.internalId = internalId;
-    return this;
-  }
-
-  project(project: string) : this {
-    this.store.project = project;
-    return this;
+  constructor() {
+    super([
+      'name',
+      'internalId',
+      'project',
+      'affectedProject',
+      'template',
+      'templateFlag',
+      'paused'
+    ]);
   }
 }

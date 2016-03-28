@@ -6,10 +6,8 @@ export function compileLocator(locator: ILocator) {
   return Object
     .keys(locator)
     .map(l => {
-      const v = locator[l];
-
       if (typeof l === 'number' || typeof l === 'string') {
-        return `${l}:${v}`
+        return `${l}:${locator[l]}`
       }
     })
     .join('');
@@ -17,9 +15,16 @@ export function compileLocator(locator: ILocator) {
 
 export default class Locator<T extends ILocator> {
   store : T = <T>{};
+  id: (id: number|string) => this;
 
-  id(id: string) : this {
-    this.store.id = id;
-    return this;
+  constructor(dimensions?: string[]) {
+    dimensions.push('id');
+
+    dimensions.forEach(d => {
+      this[d] = (v:any) => {
+        this.store[d] = v;
+        return this;
+      }
+    });
   }
 }
