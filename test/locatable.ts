@@ -192,7 +192,7 @@ test.cb('list(locator, cb)', t => {
   });
 });
 
-test('by(locator.list(): Promise', async (t) => {
+test('by(locator).list(): Promise', async (t) => {
   const client = new MockClient();
   const locatable = new TestLocatable(client, null, '/test-locatable');
 
@@ -226,6 +226,41 @@ test.cb('.by(locator).list(cb)', t => {
         path: '/test-locatable?locator=stringDim:another-value'
       },
       'should list by object locator');
+
+    t.end();
+  });
+});
+
+// == all()
+
+test('all(): Promise', async (t) => {
+  const client = new MockClient();
+  const locatable = new TestLocatable(client, null, '/test-locatable');
+
+  const result = await locatable.all();
+  t.is(result.status, 'success', 'should receive result');
+  t.same(
+    client.lastCalled(),
+    <IApiCall>{
+      verb: 'get',
+      path: '/test-locatable'
+    },
+    'should get all');
+});
+
+test.cb('all(cb)', t => {
+  const client = new MockClient();
+  const locatable = new TestLocatable(client, null, '/test-locatable');
+
+  locatable.all((r: any) => {
+    t.is(r.status, 'success', 'should receive result');
+    t.same(
+      client.lastCalled(),
+      <IApiCall>{
+        verb: 'get',
+        path: '/test-locatable'
+      },
+      'should get all');
 
     t.end();
   });

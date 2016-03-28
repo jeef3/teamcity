@@ -46,7 +46,7 @@ export default class Locatable<T extends ILocator> {
   /*
    * Get all items (resets the current locator)
    */
-  all(cb?: () => void) {
+  all(cb?: (r: any) => void) {
     this._locator = <T>{};
     return this.client._get(this.getPath(), cb);
   }
