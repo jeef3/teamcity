@@ -42,7 +42,10 @@ test('get(object): Promise', async (t) => {
   const client = new MockClient();
   const locatable = new TestLocatable(client, null, '/test-locatable');
 
-  const locator = <ITestLocator>{ stringDim: 'some-value' };
+  const locator = <ITestLocator>{
+    booleanDim: true,
+    stringDim: 'some-value'
+  };
 
   const result = await locatable.get(locator);
   t.is(result.status, 'success', 'should receive result');
@@ -50,7 +53,7 @@ test('get(object): Promise', async (t) => {
     client.lastCalled(),
     <IApiCall>{
       verb: 'get',
-      path: '/test-locatable/stringDim:some-value'
+      path: '/test-locatable/booleanDim:true,stringDim:some-value'
     },
     'should get by object locator');
 });
@@ -59,7 +62,10 @@ test.cb('get(object, cb)', t => {
   const client = new MockClient();
   const locatable = new TestLocatable(client, null, '/test-locatable');
 
-  const locator = <ITestLocator>{ stringDim: 'some-value' };
+  const locator = <ITestLocator>{
+    booleanDim: false,
+    stringDim: 'some-value'
+  };
 
   locatable.get(locator, (r: any) => {
     t.is(r.status, 'success', 'should receive result');
@@ -67,7 +73,7 @@ test.cb('get(object, cb)', t => {
       client.lastCalled(),
       <IApiCall>{
         verb: 'get',
-        path: '/test-locatable/stringDim:some-value'
+        path: '/test-locatable/booleanDim:false,stringDim:some-value'
       },
       'should get by object locator');
 
@@ -80,6 +86,7 @@ test('get(locator): Promise', async (t) => {
   const locatable = new TestLocatable(client, null, '/test-locatable');
 
   const locator = new TestLocator()
+    .numberDim(2)
     .stringDim('another-value');
 
   const result = await locatable.get(locator);
@@ -88,7 +95,7 @@ test('get(locator): Promise', async (t) => {
     client.lastCalled(),
     <IApiCall>{
       verb: 'get',
-      path: '/test-locatable/stringDim:another-value'
+      path: '/test-locatable/numberDim:2,stringDim:another-value'
     },
     'should get by object locator');
 });
@@ -98,6 +105,7 @@ test.cb('get(locator, cb)', t => {
   const locatable = new TestLocatable(client, null, '/test-locatable');
 
   const locator = new TestLocator()
+    .numberDim(3)
     .stringDim('another-value');
 
   locatable.get(locator, (r: any) => {
@@ -106,7 +114,7 @@ test.cb('get(locator, cb)', t => {
       client.lastCalled(),
       <IApiCall>{
         verb: 'get',
-        path: '/test-locatable/stringDim:another-value'
+        path: '/test-locatable/numberDim:3,stringDim:another-value'
       },
       'should get by object locator');
 
