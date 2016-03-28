@@ -5,23 +5,6 @@ import TeamCity from '../src/index';
 import ProjectLocator, { IProjectLocator } from '../src/locators/project-locator';
 import BuildTypeLocator from '../src/locators/build-type-locator';
 
-test('field', t => {
-  const client = new MockClient();
-  const teamcity = new TeamCity({}, client);
-
-  teamcity.projects
-    .by({ name: 'Project Four' })
-    .field('field-one');
-
-  t.same(
-    client.lastCalled(),
-    <IApiCall>{
-      verb: 'get',
-      path: '/app/rest/projects/name:Project Four/field-one'
-    }
-  );
-});
-
 test('buildTypes', t => {
   const client = new MockClient();
   const teamcity = new TeamCity({}, client);

@@ -21,8 +21,4 @@ export default class Projects extends Locatable<IProjectLocator> {
 
   // TODO: Not sure about this
   destroy(cb?: (result: any) => void) {}
-
-  field(field: any, cb?: (result: any) => void) {
-    return this.client._get(this.getPath(field), cb);
-  }
 }
