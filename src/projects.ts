@@ -1,5 +1,5 @@
-import { IClientApi } from './client';
 import Locatable from './locatable';
+import { IClientApi } from './client';
 import { IProjectLocator } from './locators/project-locator';
 import BuildTypes from './build-types';
 

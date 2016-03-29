@@ -1,5 +1,6 @@
 import { IClientApi } from './client';
 import Projects from './projects';
+import VcsRootInstances from './vcs-root-instances';
 
 interface Options {
   username?: string,
@@ -20,5 +21,6 @@ export default class TeamCity {
     this.client = client;
 
     this.projects = new Projects(this.client);
+    this.vcsRootInstances = new VcsRootInstances(this.client);
   }
 }
