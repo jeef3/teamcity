@@ -1,6 +1,8 @@
 import Locator, { ILocator } from '../locator';
 import BuildTypeLocator from './build-type-locator';
+import BuildLocator from './build-locator';
 import ProjectLocator from './project-locator';
+import VcsRootInstanceLocator from './vcs-root-instance-locator';
 
 export interface IChangesLocator extends ILocator {
   project?: string;
@@ -9,7 +11,7 @@ export interface IChangesLocator extends ILocator {
   vcsRoot?: any;
   vcsRootInstance: VcsRootInstanceLocator;
   username: string;
-  user: UserLocator;
+  user: string; // UserLocator;
   version: string;
   internalVersion: string;
   comment: string;
