@@ -1,5 +1,5 @@
-import { IClientApi } from './client';
 import Locatable from './locatable';
+import { IClientApi } from './client';
 import { IBuildTypeLocator } from './locators/build-type-locator';
 
 export default class BuildTypes extends Locatable<IBuildTypeLocator> {
