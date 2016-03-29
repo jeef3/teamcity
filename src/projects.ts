@@ -2,11 +2,12 @@ import Locatable from './locatable';
 import { IClientApi } from './client';
 import { IProjectLocator } from './locators/project-locator';
 import BuildTypes from './build-types';
+import Templates from './templates';
 
 export default class Projects extends Locatable<IProjectLocator> {
 
   buildTypes: BuildTypes;
-  templates: BuildTypes;
+  templates: Templates;
 
   constructor(client: IClientApi, parent?: Locatable<any>, path?: string) {
     super(client, parent, path || '/app/rest/projects');
